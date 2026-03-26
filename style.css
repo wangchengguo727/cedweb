@@ -1,172 +1,97 @@
-/* --- 1. 全局样式 (Global Styles) --- */
+/* --- 基础设置 --- */
 :root {
-    --primary-color: #0056A3; /* 提取自LOGO的深蓝色 */
-    --primary-light: #66A3D3; /* 较浅的蓝色，用于强调 */
-    --accent-color: #ffde59;  /* 辅助黄色，与蓝色形成对比 */
-    --text-color: #333;
-    --light-gray: #f4f4f4;
-    --dark-gray: #666;
-    --white: #fff;
-    --container-width: 1200px;
-    --font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
-    --geometric-curve: 4px;
+    --primary-color: #0056A3; /* 系徽深蓝色 */
+    --gold-color: #D4AF37;    /* 毕业季纪念金色 */
+    --text-dark: #333333;
+    --text-light: #666666;
+    --bg-light: #f8f9fa;
+    --white: #ffffff;
 }
 
 * {
     margin: 0;
     padding: 0;
-    box-content: border-box;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* 移除移动端点击的高亮背景 */
 }
 
 body {
-    font-family: var(--font-family);
-    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
     line-height: 1.6;
-    background-color: var(--white);
     overflow-x: hidden;
 }
 
 .container {
-    max-width: var(--container-width);
-    margin: 0 auto;
     padding: 0 20px;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s ease;
+/* --- 动画：滚动揭示效果的初始状态 --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
 }
 
-ul {
-    list-style: none;
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-h1, h2, h3, h4 {
-    color: var(--primary-color);
-}
-
-.text-center {
-    text-align: center;
-}
-
-/* --- 2. 头部 (Header) --- */
-header {
-    background-color: var(--white);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+/* --- 顶部固定导航 --- */
+.mobile-header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
-    padding: 10px 0;
-    transition: all 0.3s ease;
-}
-
-header.scrolled {
-    padding: 5px 0;
-    background-color: rgba(255,255,255,0.95);
-}
-
-.header-content {
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px); /* 毛玻璃效果 */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 1000;
 }
 
-.logo-area {
+.header-logo {
     display: flex;
     align-items: center;
 }
 
-.dept-logo {
-    height: 60px; /* 调整LOGO大小 */
-    margin-right: 15px;
-    /* 如果LOGO有白色边框，可以尝试以下属性消除 */
-    /* mix-blend-mode: multiply; */
+.logo-img {
+    height: 35px;
+    margin-right: 8px;
 }
 
-.logo-text h1 {
-    font-size: 1.5rem;
+.logo-text {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.header-tag {
+    background-color: var(--gold-color);
+    color: var(--white);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
     font-weight: bold;
 }
 
-.logo-text p {
-    font-size: 0.8rem;
-    color: var(--dark-gray);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.nav-links {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 5px 0;
-    position: relative;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--primary-color);
-}
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary-color);
-    transition: width 0.3s ease;
-}
-
-.nav-links a:hover::after,
-.nav-links a.active::after {
-    width: 100%;
-}
-
-.menu-toggle {
-    display: none;
-    cursor: pointer;
-}
-
-/* --- 3. 主视觉区 (Hero Section) --- */
-.hero-section {
-    margin-top: 80px; /* 预留头部空间不变 */
-    position: relative;
-    /* 【核心修改】将 calc(100vh - 80px) 改为固定高度 450px */
-    height: 450px; 
-    overflow: hidden;
-}
-
-.hero-carousel {
-    width: 100%;
-    height: 100%;
-}
-
-.carousel-item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+/* --- 主视觉区 (Hero) --- */
+.hero {
+    height: 100vh; /* 占据整个屏幕高度 */
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    z-index: 1;
-}
-
-.carousel-item.active {
-    opacity: 1;
-    z-index: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .hero-overlay {
@@ -175,312 +100,242 @@ header.scrolled {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.6); /* 稍微加深一点遮罩，让文字更清晰 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: linear-gradient(to bottom, rgba(0,86,163,0.3), rgba(0,0,0,0.8)); /* 渐变遮罩，突出底部文字 */
+    z-index: 1;
 }
 
-.hero-text {
-    text-align: center;
+.hero-content {
+    position: relative;
+    z-index: 2;
     color: var(--white);
-    max-width: 800px;
-    padding: 0 20px; /* 增加一点内边距防止文字贴边 */
+    padding: 0 20px;
+    margin-top: 60px; /* 避开顶部导航 */
 }
 
-/* 【核心修改】稍微缩小标题字号，以适应变矮的容器 */
-.hero-text h2 {
-    font-size: 2.5rem; 
-    color: var(--white);
-    margin-bottom: 15px; 
-    font-weight: bold;
-    letter-spacing: 2px; /* 增加一点字间距显得更大气 */
-}
-
-/* 【核心修改】稍微缩小段落间距 */
-.hero-text p {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    opacity: 0.9;
-}
-
-/* 移动端适配：屏幕变小时进一步缩小 Banner 高度 */
-@media (max-width: 768px) {
-    .hero-section {
-        height: 300px; /* 手机端高度更小 */
-    }
-    .hero-text h2 { 
-        font-size: 1.8rem; 
-    }
-    .hero-text p { 
-        font-size: 0.9rem; 
-        margin-bottom: 20px;
-    }
-}
-
-/* --- 4. 通用部分标题 --- */
-.section-title {
-    text-align: center;
-    margin: 80px 0 50px;
-}
-
-.section-title h2 {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-.title-underline {
-    width: 60px;
-    height: 4px;
-    background-color: var(--primary-color);
-    margin: 15px auto 0;
-    border-radius: var(--geometric-curve);
-}
-
-/* --- 5. 系部概况 (About Section) --- */
-.about-content {
-    max-width: 900px; /* 限制最大宽度，防止文字拉得太长导致阅读疲劳 */
-    margin: 0 auto;   /* 让整个内容块在页面居中 */
-}
-
-.about-text {
-    margin-bottom: 30px;
-}
-
-.about-text p {
-    margin-bottom: 20px;
-    color: var(--dark-gray);
-    font-size: 1.1rem; /* 稍微放大一点字号 */
-    text-indent: 2em;  /* 增加中文排版标准的段落首行缩进 */
-    line-height: 1.8;  /* 增加行高，让大段文字呼吸感更强 */
-    text-align: justify; /* 两端对齐，显得更规整 */
-}
-
-/* --- 6. 专业设置 (Majors Section) --- */
-.majors-section {
-    background-color: var(--light-gray);
-    padding: 20px 20px 80px; /* 调整内边距，使背景色不影响标题 */
-}
-
-.majors-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-}
-
-.major-card {
-    background-color: var(--white);
-    padding: 40px;
-    border-radius: var(--geometric-curve);
-    text-align: center;
-    transition: all 0.3s ease;
-    border-bottom: 4px solid transparent;
-}
-
-.major-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0,86,163,0.15); /* 阴影也带点主色 */
-    border-color: var(--primary-color);
-}
-
-.card-icon {
-    font-size: 3rem;
-    color: var(--primary-color);
-    margin-bottom: 25px;
-}
-
-.major-card h3 {
+.hero-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.3;
     margin-bottom: 15px;
-    font-size: 1.3rem;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.major-card p {
-    color: var(--dark-gray);
-    font-size: 0.95rem;
+.hero-subtitle {
+    font-size: 1rem;
+    color: var(--gold-color);
+    font-weight: 500;
+    letter-spacing: 1px;
 }
 
-/* --- 7. 最新动态 (News Section) --- */
-.news-list {
-    margin-bottom: 50px;
-}
-
-.news-item {
-    display: flex;
-    padding: 25px;
-    border-bottom: 1px solid #eee;
-    transition: background 0.3s ease;
-}
-
-.news-item:hover {
-    background-color: #fafafa;
-}
-
-.news-date {
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 100px;
-    background-color: var(--primary-color);
-    color: var(--white);
-    border-radius: var(--geometric-curve);
-    margin-right: 30px;
-    text-align: center;
-    flex-shrink: 0;
+    animation: bounce 2s infinite;
+    z-index: 2;
 }
 
-.news-date .day {
-    font-size: 2.2rem;
+.scroll-indicator i {
+    margin-top: 8px;
+    font-size: 1.2rem;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+    40% { transform: translate(-50%, -10px); }
+    60% { transform: translate(-50%, -5px); }
+}
+
+/* --- 毕业寄语 (Blessing) --- */
+.blessing-section {
+    padding: 60px 0;
+    background-color: var(--white);
+    position: relative;
+}
+
+.quote-icon {
+    font-size: 2.5rem;
+    color: rgba(212, 175, 55, 0.2); /* 淡淡的金色 */
+    margin-bottom: 15px;
+}
+
+.blessing-text {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    text-indent: 2em;
+    text-align: justify;
+    line-height: 1.8;
+}
+
+.blessing-author {
+    margin-top: 20px;
+    text-align: right;
     font-weight: bold;
+    color: var(--primary-color);
 }
 
-.news-date .month {
+/* --- 标题通用样式 --- */
+.section-title {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.title-en {
     font-size: 0.8rem;
+    color: var(--gold-color);
+    letter-spacing: 1px;
     text-transform: uppercase;
 }
 
-.news-content h3 {
-    margin-bottom: 10px;
-    font-size: 1.2rem;
+/* --- 校园风光 (Scenery) --- */
+.scenery-section {
+    padding: 50px 0;
+    background-color: var(--bg-light);
+    overflow: hidden; /* 防止横向滚动条出现系统滚动块 */
 }
 
-.news-content p {
-    color: var(--dark-gray);
-    font-size: 0.95rem;
-}
-
-/* --- 8. 按钮样式 --- */
-.btn-primary, .btn-secondary, .btn-outline {
-    display: inline-block;
-    padding: 12px 30px;
-    border-radius: var(--geometric-curve);
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: var(--accent-color);
-    color: var(--primary-color); /* 蓝色背景上用辅助黄色，形成对比 */
-}
-
-.btn-primary:hover {
-    background-color: var(--white);
-    color: var(--primary-color);
-}
-
-.btn-secondary {
-    background-color: var(--primary-color);
-    color: var(--white);
-    margin-top: 15px;
-}
-
-.btn-secondary:hover {
-    background-color: var(--dark-gray);
-}
-
-.btn-outline {
-    background: transparent;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-}
-
-.btn-outline:hover {
-    background-color: var(--primary-color);
-    color: var(--white);
-}
-
-/* --- 9. 页脚 (Footer) --- */
-footer {
-    background-color: #222;
-    color: #ccc;
-    padding: 80px 0 20px;
-    margin-top: 80px;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-bottom: 50px;
-}
-
-.footer-links h4, .footer-contact h4 {
-    color: var(--white);
-    margin-bottom: 25px;
-    font-size: 1.2rem;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.footer-links h4::after, .footer-contact h4::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 30px;
-    height: 3px;
-    background-color: var(--primary-light);
-}
-
-.footer-links ul li {
-    margin-bottom: 10px;
-}
-
-.footer-links ul li a:hover {
-    color: var(--white);
-    padding-left: 5px;
-}
-
-.footer-contact p {
-    margin-bottom: 15px;
-    font-size: 0.95rem;
+/* 横向原生滑动相册核心代码 */
+.scenery-gallery {
     display: flex;
-    align-items: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* 开启吸附效果 */
+    -webkit-overflow-scrolling: touch; /* iOS 顺滑滚动 */
+    scrollbar-width: none; /* 隐藏火狐滚动条 */
+    padding: 20px 20px 40px; /* 右侧留白确保最后一张能滑完 */
+    gap: 15px;
 }
 
-.footer-contact i {
-    color: var(--primary-light);
+.scenery-gallery::-webkit-scrollbar {
+    display: none; /* 隐藏Chrome/Safari滚动条 */
+}
+
+.scenery-card {
+    flex: 0 0 85%; /* 每张卡片占屏幕宽度的85%，露出下一张的边缘暗示可滑动 */
+    scroll-snap-align: center; /* 滑动停止时居中吸附 */
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.scenery-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.scenery-info {
+    padding: 15px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.swipe-hint {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: -15px;
+}
+
+/* --- 专业设置 (Majors) --- */
+.majors-section {
+    padding: 50px 0;
+    background-color: var(--white);
+}
+
+.section-desc {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.majors-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.major-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: var(--bg-light);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.major-icon {
+    font-size: 1.8rem;
+    color: var(--gold-color);
     margin-right: 15px;
+    margin-top: 3px;
+}
+
+.major-details h3 {
     font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 5px;
 }
 
-.footer-bottom {
-    border-top: 1px solid #333;
-    padding-top: 20px;
+.major-details p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* --- 底部 (Footer) --- */
+.mobile-footer {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 60px 0 40px;
+    text-align: center;
+}
+
+.footer-logo {
+    height: 50px;
+    margin-bottom: 15px;
+    /* mix-blend-mode: screen; 如果logo有白底可以尝试开启这个 */
+}
+
+.mobile-footer h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.mobile-footer h4 {
+    font-size: 1rem;
+    font-weight: normal;
+    opacity: 0.9;
+}
+
+.graduation-year {
+    color: var(--gold-color);
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    margin: 15px 0;
+}
+
+.footer-line {
+    width: 40px;
+    height: 2px;
+    background-color: var(--gold-color);
+    margin: 0 auto 15px;
+}
+
+.copyright {
     font-size: 0.85rem;
-}
-
-/* --- 10. 响应式媒体查询 (Responsive Media Queries) --- */
-@media (max-width: 992px) {
-    .nav-links {
-        display: none; /* 移动端默认隐藏导航 */
-    }
-
-    .menu-toggle {
-        display: block; /* 移动端显示菜单按钮 */
-    }
-
-    /* 以下用于JS切换显示移动端菜单 */
-    .nav-links.active {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: var(--white);
-        padding: 20px;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        z-index: 999;
-    }
-
-    .hero-text h2 { font-size: 2.2rem; }
-    .about-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 768px) {
-    .dept-logo { height: 50px; }
-    .logo-text h1 { font-size: 1.2rem; }
-    .logo-text p { font-size: 0.7rem; }
-    .carousel-control { display: none; } /* 移动端隐藏轮播按钮 */
+    opacity: 0.7;
 }

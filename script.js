@@ -1,94 +1,42 @@
-document.addEventListener('DOMContentLoaded', () => {
+// 等待 HTML 文档加载完毕后执行
+document.addEventListener("DOMContentLoaded", () => {
     
-    // --- 1. 头部滚动效果 (Header Scroll Effect) ---
-    const header = document.querySelector('header');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
+    // --- 滚动揭示动画 (Scroll Reveal Animation) ---
+    // 选取所有带有 'reveal' 类的元素
+    const reveals = document.querySelectorAll('.reveal');
 
-    // --- 2. 简易轮播图 (Simple Carousel) ---
-    const carouselItems = document.querySelectorAll('.carousel-item');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    
-    let currentIndex = 0;
-    let carouselInterval;
-    const autoPlaySpeed = 5000; // 自动播放速度（毫秒）
+    // 定义一个配置项，决定元素露出多少比例时触发动画
+    const revealOptions = {
+        threshold: 0.15, // 元素出现 15% 时触发
+        rootMargin: "0px 0px -50px 0px" // 底部提前 50px 触发
+    };
 
-    // 显示特定索引的图片
-    function showItem(index) {
-        // 先隐藏所有图片
-        carouselItems.forEach(item => item.classList.remove('active'));
-        // 显示当前图片
-        carouselItems[index].classList.add('active');
-    }
-
-    // 下一张
-    function nextSlide() {
-        currentIndex++;
-        if (currentIndex >= carouselItems.length) {
-            currentIndex = 0;
-        }
-        showItem(currentIndex);
-    }
-
-    // 上一张
-    function prevSlide() {
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = carouselItems.length - 1;
-        }
-        showItem(currentIndex);
-    }
-
-    // 绑定按钮事件
-    nextBtn.addEventListener('click', () => {
-        nextSlide();
-        resetInterval(); // 手动点击后重置自动播放计时器
-    });
-
-    prevBtn.addEventListener('click', () => {
-        prevSlide();
-        resetInterval();
-    });
-
-    // 启动自动播放
-    function startInterval() {
-        carouselInterval = setInterval(nextSlide, autoPlaySpeed);
-    }
-
-    // 重置自动播放
-    function resetInterval() {
-        clearInterval(carouselInterval);
-        startInterval();
-    }
-
-    // 页面加载后开始
-    startInterval();
-
-    // --- 3. 移动端菜单切换 (Mobile Menu Toggle) ---
-    // 这个功能在CSS中预留了样式，JS在此实现切换逻辑
-    const mobileMenuBtn = document.getElementById('mobile-menu');
-    const navLinks = document.querySelector('.nav-links');
-
-    mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        mobileMenuBtn.classList.toggle('is-active'); // 用于动画（可选）
-    });
-
-    // 点击导航链接后自动关闭菜单（在移动端）
-    const links = document.querySelectorAll('.nav-links a');
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            if (navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
+    // 使用 Intersection Observer API 监听元素是否进入视口
+    const revealOnScroll = new IntersectionObserver(function(
+        entries,
+        revealOnScroll
+    ) {
+        entries.forEach(entry => {
+            // 如果元素进入了视口
+            if (!entry.isIntersecting) {
+                return;
+            } else {
+                // 添加 'active' 类以触发 CSS 动画
+                entry.target.classList.add('active');
+                // 动画触发后停止监听该元素，只播放一次
+                revealOnScroll.unobserve(entry.target);
             }
         });
+    }, revealOptions);
+
+    // 将所有选中的元素加入监听
+    reveals.forEach(reveal => {
+        revealOnScroll.observe(reveal);
     });
 
+    // --- 确保横向滚动条在页面加载时在最左侧 ---
+    const gallery = document.querySelector('.scenery-gallery');
+    if(gallery) {
+        gallery.scrollLeft = 0;
+    }
 });
