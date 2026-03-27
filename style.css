@@ -1,7 +1,7 @@
 /* --- 基础设置 --- */
 :root {
-    --primary-color: #0056A3; /* 系徽深蓝色 */
-    --gold-color: #D4AF37;    /* 毕业季纪念金色 */
+    --primary-color: #0056A3; 
+    --gold-color: #D4AF37;    
     --text-dark: #333333;
     --text-light: #666666;
     --bg-light: #f8f9fa;
@@ -12,7 +12,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* 移除移动端点击的高亮背景 */
+    -webkit-tap-highlight-color: transparent; 
 }
 
 body {
@@ -27,7 +27,7 @@ body {
     padding: 0 20px;
 }
 
-/* --- 动画：滚动揭示效果的初始状态 --- */
+/* --- 动画：滚动揭示效果 --- */
 .reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -47,7 +47,7 @@ body {
     width: 100%;
     height: 60px;
     background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px); /* 毛玻璃效果 */
+    backdrop-filter: blur(10px); 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,6 +64,7 @@ body {
 .logo-img {
     height: 35px;
     margin-right: 8px;
+    border-radius: 50%; 
 }
 
 .logo-text {
@@ -83,10 +84,10 @@ body {
 
 /* --- 主视觉区 (Hero) --- */
 .hero {
-    height: 100vh; /* 占据整个屏幕高度 */
+    height: 100vh; 
     background-size: cover;
     background-position: center;
-    position: relative;
+    position: relative; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -100,7 +101,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0,86,163,0.3), rgba(0,0,0,0.8)); /* 渐变遮罩，突出底部文字 */
+    background: linear-gradient(to bottom, rgba(0,86,163,0.3), rgba(0,0,0,0.8)); 
     z-index: 1;
 }
 
@@ -109,20 +110,83 @@ body {
     z-index: 2;
     color: var(--white);
     padding: 0 20px;
-    margin-top: 60px; /* 避开顶部导航 */
+    transform: translateY(-20px); 
 }
 
+/* --- 【新增】徽章排版与滑动动画 --- */
+.hero-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px; 
+    /* 移除之前的 gap，用分离器的 margin 替代，方便控制动画起点 */
+}
+
+.logo-separator {
+    font-size: 2.2rem;
+    color: var(--white);
+    font-weight: 300;
+    margin: 0 25px; /* 这里控制两个图标拉开的距离 (总间距会大于50px) */
+    opacity: 0;
+    transform: scale(0.5);
+    /* 斜杠从中心弹出的动画 */
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+}
+
+.logo-slide {
+    display: flex;
+}
+
+/* 左侧校徽：起始位置向右偏移(藏在中心)，然后向左滑归位 */
+.left-slide {
+    opacity: 0;
+    transform: translateX(60px); 
+    animation: slideOutLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
+}
+
+/* 右侧系徽：起始位置向左偏移(藏在中心)，然后向右滑归位 */
+.right-slide {
+    opacity: 0;
+    transform: translateX(-60px); 
+    animation: slideOutRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
+}
+
+.hero-logo-img {
+    width: 70px; 
+    height: 70px;
+    border-radius: 50%; 
+    background-color: var(--white); 
+    object-fit: contain; 
+    border: 2px solid rgba(255, 255, 255, 0.9); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+}
+
+/* 徽章动画关键帧 */
+@keyframes popIn {
+    100% { opacity: 0.8; transform: scale(1); } /* 斜杠保持轻微透明度显得不生硬 */
+}
+
+@keyframes slideOutLeft {
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+/* --- 剩余样式保持不变 --- */
 .hero-title {
     font-size: 2.8rem;
     font-weight: 800;
     line-height: 1.3;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     letter-spacing: 2px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 .hero-subtitle {
-    font-size: 1rem;
+    font-size: 1.05rem; 
+    line-height: 1.6;  
     color: var(--gold-color);
     font-weight: 500;
     letter-spacing: 1px;
@@ -130,16 +194,15 @@ body {
 
 .scroll-indicator {
     position: absolute;
-    bottom: 40px;
+    bottom: 35px; 
     left: 50%;
-    transform: translateX(-50%);
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.8);
     font-size: 0.85rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     animation: bounce 2s infinite;
-    z-index: 2;
+    z-index: 10; 
 }
 
 .scroll-indicator i {
@@ -153,7 +216,7 @@ body {
     60% { transform: translate(-50%, -5px); }
 }
 
-/* --- 毕业寄语 (Blessing) --- */
+/* --- 毕业寄语 --- */
 .blessing-section {
     padding: 60px 0;
     background-color: var(--white);
@@ -162,7 +225,7 @@ body {
 
 .quote-icon {
     font-size: 2.5rem;
-    color: rgba(212, 175, 55, 0.2); /* 淡淡的金色 */
+    color: rgba(212, 175, 55, 0.2); 
     margin-bottom: 15px;
 }
 
@@ -198,31 +261,30 @@ body {
     text-transform: uppercase;
 }
 
-/* --- 校园风光 (Scenery) --- */
+/* --- 校园风光 --- */
 .scenery-section {
     padding: 50px 0;
     background-color: var(--bg-light);
-    overflow: hidden; /* 防止横向滚动条出现系统滚动块 */
+    overflow: hidden; 
 }
 
-/* 横向原生滑动相册核心代码 */
 .scenery-gallery {
     display: flex;
     overflow-x: auto;
-    scroll-snap-type: x mandatory; /* 开启吸附效果 */
-    -webkit-overflow-scrolling: touch; /* iOS 顺滑滚动 */
-    scrollbar-width: none; /* 隐藏火狐滚动条 */
-    padding: 20px 20px 40px; /* 右侧留白确保最后一张能滑完 */
+    scroll-snap-type: x mandatory; 
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
+    padding: 20px 20px 40px; 
     gap: 15px;
 }
 
 .scenery-gallery::-webkit-scrollbar {
-    display: none; /* 隐藏Chrome/Safari滚动条 */
+    display: none; 
 }
 
 .scenery-card {
-    flex: 0 0 85%; /* 每张卡片占屏幕宽度的85%，露出下一张的边缘暗示可滑动 */
-    scroll-snap-align: center; /* 滑动停止时居中吸附 */
+    flex: 0 0 85%; 
+    scroll-snap-align: center; 
     border-radius: 12px;
     overflow: hidden;
     background: var(--white);
@@ -250,7 +312,7 @@ body {
     margin-top: -15px;
 }
 
-/* --- 专业设置 (Majors) --- */
+/* --- 专业设置 --- */
 .majors-section {
     padding: 50px 0;
     background-color: var(--white);
@@ -295,7 +357,7 @@ body {
     color: var(--text-light);
 }
 
-/* --- 底部 (Footer) --- */
+/* --- 底部 --- */
 .mobile-footer {
     background-color: var(--primary-color);
     color: var(--white);
@@ -306,7 +368,8 @@ body {
 .footer-logo {
     height: 50px;
     margin-bottom: 15px;
-    /* mix-blend-mode: screen; 如果logo有白底可以尝试开启这个 */
+    border-radius: 50%; 
+    background: white; 
 }
 
 .mobile-footer h3 {

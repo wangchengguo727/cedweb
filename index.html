@@ -2,12 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 针对移动端优化的 meta 标签，禁止用户缩放以保持类似App的体验 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026届毕业纪念 - 计算机工程系</title>
-    <!-- 引入外部 CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- 引入字体图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- 引入 Favicon -->
     <link rel="icon" href="path/to/your/favicon.png" type="image/png">
@@ -17,23 +14,42 @@
     <!-- 顶部固定导航条 -->
     <header class="mobile-header">
         <div class="header-logo">
-            <!-- 【占位符】插入你们的系徽 -->
-            <img src="path/to/your/logo.png" alt="系徽" class="logo-img">
-            <span class="logo-text">计算机工程系</span>
+            <img src="img/logo/计算机工程系LOGO.jpg" alt="系徽" class="logo-img">
+            <span class="logo-text"></span>
         </div>
-        <div class="header-tag">2026届专属</div>
+        <div class="header-tag"></div>
     </header>
 
     <!-- 1. 主视觉区 (Hero Section) -->
     <section class="hero" style="background-image: url('path/to/your/campus-hero-bg.jpg');">
         <div class="hero-overlay"></div>
+        
+        <!-- 文字内容区 -->
         <div class="hero-content reveal">
-            <h1 class="hero-title">青春不散场<br>梦想正启航</h1>
-            <p class="hero-subtitle">天津理工大学中环信息学院 · 计算机工程系</p>
-            <div class="scroll-indicator">
-                <span>向下滑动开启回忆</span>
-                <i class="fas fa-chevron-down"></i>
+            <!-- 【核心修改】带有动画效果的校徽和系徽双圆标展示区 -->
+            <div class="hero-logos">
+                <!-- 左侧：校徽向左滑出 -->
+                <div class="logo-slide left-slide">
+                    <img src="img/logo/校徽.jpg" alt="天津理工大学中环信息学院校徽" class="hero-logo-img">
+                </div>
+                
+                <!-- 中间：斜杠分隔符 -->
+                <div class="logo-separator">/</div>
+                
+                <!-- 右侧：系徽向右滑出 -->
+                <div class="logo-slide right-slide">
+                    <img src="img/logo/计算机工程系LOGO.jpg" alt="计算机工程系系徽" class="hero-logo-img">
+                </div>
             </div>
+
+            <h1 class="hero-title">青春不散场<br>梦想正启航</h1>
+            <p class="hero-subtitle">天津理工大学中环信息学院<br>计算机工程系</p>
+        </div>
+
+        <!-- 滑动指示器 -->
+        <div class="scroll-indicator">
+            <span>向下滑动开启回忆</span>
+            <i class="fas fa-chevron-down"></i>
         </div>
     </section>
 
@@ -48,32 +64,27 @@
         </div>
     </section>
 
-    <!-- 3. 校园风光 (Campus Scenery - 横向滑动相册) -->
+    <!-- 3. 校园风光 (Campus Scenery) -->
     <section class="scenery-section">
         <div class="container reveal">
             <h2 class="section-title">校园风光 <span class="title-en">CAMPUS MEMORIES</span></h2>
         </div>
-        <!-- 横向滑动容器 -->
         <div class="scenery-gallery reveal">
-            <!-- 风光卡片 1 -->
             <div class="scenery-card">
-                <img src="path/to/campus-1.jpg" alt="[Image of 教学楼]">
-                <div class="scenery-info">清晨的教学楼</div>
+                <img src="path/to/campus-1.jpg" alt="">
+                <div class="scenery-info">png1</div>
             </div>
-            <!-- 风光卡片 2 -->
             <div class="scenery-card">
-                <img src="path/to/campus-2.jpg" alt="[Image of 图书馆]">
-                <div class="scenery-info">图书馆的午后</div>
+                <img src="path/to/campus-2.jpg" alt="">
+                <div class="scenery-info">png2</div>
             </div>
-            <!-- 风光卡片 3 -->
             <div class="scenery-card">
-                <img src="path/to/campus-3.jpg" alt="[Image of 操场]">
-                <div class="scenery-info">操场上的汗水与晚霞</div>
+                <img src="path/to/campus-3.jpg" alt="">
+                <div class="scenery-info">png3</div>
             </div>
-            <!-- 风光卡片 4 -->
             <div class="scenery-card">
-                <img src="path/to/campus-4.jpg" alt="[Image of 实验室]">
-                <div class="scenery-info">深夜亮灯的实验室</div>
+                <img src="path/to/campus-4.jpg" alt="">
+                <div class="scenery-info">png4</div>
             </div>
         </div>
         <div class="swipe-hint"><i class="fas fa-arrows-alt-h"></i> 左右滑动查看更多</div>
@@ -86,7 +97,6 @@
             <p class="section-desc">还记得你最初选择的那个方向吗？</p>
             
             <div class="majors-list">
-                <!-- 专业 1 -->
                 <div class="major-item">
                     <div class="major-icon"><i class="fas fa-desktop"></i></div>
                     <div class="major-details">
@@ -94,15 +104,15 @@
                         <p>探索计算之美，筑牢底层逻辑，你是构筑数字世界的基石。</p>
                     </div>
                 </div>
-                <!-- 专业 2 -->
+                
                 <div class="major-item">
                     <div class="major-icon"><i class="fas fa-code"></i></div>
+                    <a href="#"></a>
                     <div class="major-details">
                         <h3>软件工程</h3>
                         <p>以工程化思维铸就软件之魂，你将成为系统架构的执笔人。</p>
                     </div>
                 </div>
-                <!-- 专业 3 -->
                 <div class="major-item">
                     <div class="major-icon"><i class="fas fa-photo-video"></i></div>
                     <div class="major-details">
@@ -110,7 +120,6 @@
                         <p>左手代码，右手艺术，你们在虚拟与现实的交界处创造奇迹。</p>
                     </div>
                 </div>
-                <!-- 专业 4 -->
                 <div class="major-item">
                     <div class="major-icon"><i class="fas fa-database"></i></div>
                     <div class="major-details">
@@ -125,7 +134,7 @@
     <!-- 5. 底部留念 (Footer) -->
     <footer class="mobile-footer">
         <div class="container reveal">
-            <img src="path/to/your/logo.png" alt="系徽" class="footer-logo">
+            <img src="path/to/dept-logo.jpg" alt="系徽" class="footer-logo">
             <h3>天津理工大学中环信息学院</h3>
             <h4>计算机工程系</h4>
             <p class="graduation-year">Class of 2026</p>
@@ -134,7 +143,6 @@
         </div>
     </footer>
 
-    <!-- 引入外部 JS -->
     <script src="script.js"></script>
 </body>
 </html>
