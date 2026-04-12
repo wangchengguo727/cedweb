@@ -289,11 +289,12 @@ body {
     overflow: hidden;
     background: var(--white);
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    aspect-ratio: 4 / 3; /* 【新增】强制卡片为 4:3 比例 */
 }
 
 .scenery-card img {
     width: 100%;
-    height: 220px;
+    height: 100%; /* 【修改】将原来的 220px 固定高度改为 100% */
     object-fit: cover;
     display: block;
 }
@@ -392,7 +393,7 @@ body {
 }
 
 .footer-line {
-    width: 40px;
+    width: 225px;
     height: 2px;
     background-color: var(--gold-color);
     margin: 0 auto 15px;
@@ -401,4 +402,64 @@ body {
 .copyright {
     font-size: 0.85rem;
     opacity: 0.7;
+}
+/* --- 新增：观看更多风景卡片样式 --- */
+.view-more-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    text-decoration: none; /* 移除超链接默认下划线 */
+    cursor: pointer;
+}
+
+.view-more-content {
+    text-align: center;
+}
+
+.view-more-content i {
+    font-size: 2.5rem;
+    color: var(--gold-color); /* 金色箭头点缀 */
+    margin-bottom: 12px;
+}
+
+.view-more-content p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--white);
+    margin: 0;
+}
+
+.view-more-card:active {
+    opacity: 0.9; /* 手机端点击时的反馈效果 */
+}
+/* --- 拖拽跳转指示器特效 --- */
+.scenery-section {
+    position: relative; /* 确保指示器能基于该板块绝对定位 */
+}
+
+.drag-to-gallery-indicator {
+    position: absolute;
+    top: 60%; /* 垂直居中稍微偏下，对齐图片中心 */
+    right: 0; /* 贴在屏幕最右侧边缘 */
+    transform: translate(100%, -50%); /* 初始状态：100% 藏在屏幕右侧外部看不见 */
+    background: var(--white);
+    color: var(--primary-color);
+    padding: 12px 20px;
+    border-radius: 30px 0 0 30px; /* 左边圆角，右边直角 */
+    box-shadow: -4px 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    z-index: 100;
+    opacity: 0;
+    transition: color 0.3s, background 0.3s; /* 变色的过渡动画 */
+    pointer-events: none; /* 防止挡住用户的正常点击 */
+}
+
+/* 箭头到达屏幕中间（满足跳转条件）时的变色状态 */
+.drag-to-gallery-indicator.ready {
+    background: var(--primary-color);
+    color: var(--gold-color);
 }

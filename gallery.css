@@ -1,0 +1,139 @@
+/* --- 基础变量 (与主页保持统一色调) --- */
+:root {
+    --primary-color: #0056A3; 
+    --bg-light: #f8f9fa;
+    --text-dark: #333333;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+/* --- 顶部导航 --- */
+.gallery-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 100;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    width: 60px;
+}
+
+.back-btn i {
+    margin-right: 5px;
+}
+
+.gallery-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.header-placeholder {
+    width: 60px; /* 与返回按钮等宽，确保标题绝对居中 */
+}
+
+/* --- 相册网格区 --- */
+.gallery-container {
+    padding: 70px 10px 40px; /* 顶部留出导航栏空间 */
+}
+
+.gallery-tips {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 手机端两列显示 */
+    gap: 8px; /* 图片间距 */
+}
+
+.photo-item {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* 统一裁剪为正方形，看起来最整齐 */
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #eaeaea;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 保证图片铺满正方形且不变形 */
+    display: block;
+}
+
+.photo-item:active {
+    opacity: 0.8; /* 点击反馈 */
+}
+
+/* --- 大图预览层 (Lightbox) --- */
+.lightbox {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#lightbox-img {
+    max-width: 100%;
+    max-height: 90vh; /* 限制最高高度 */
+    object-fit: contain; /* 完整显示原比例大图 */
+    border-radius: 4px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: var(--white);
+    font-size: 2rem;
+    z-index: 2001;
+    cursor: pointer;
+    padding: 10px;
+}

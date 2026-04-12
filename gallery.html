@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>校园风光相册 - 计算机工程系</title>
+    <!-- 引入分离的 CSS 文件 -->
+    <link rel="stylesheet" href="gallery.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- 顶部返回导航 -->
+    <header class="gallery-header">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-chevron-left"></i> 返回
+        </a>
+        <h1 class="gallery-title">校园记忆</h1>
+        <div class="header-placeholder"></div> <!-- 占位用，保持标题居中 -->
+    </header>
+
+    <!-- 相册网格区 -->
+    <main class="gallery-container">
+        <p class="gallery-tips">轻触图片可放大查看</p>
+        
+        <div class="photo-grid" id="photo-grid">
+            <!-- 
+              这里我为你预留了23个图片位置，
+              请将 src 替换为你截图中的实际路径（如 img/海棠花/xxx.jpg）
+            -->
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 1"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 2"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 3"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 4"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 5"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 6"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 7"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 8"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 9"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 10"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 11"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 12"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 13"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 14"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 15"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 16"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 17"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 18"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 19"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 20"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 21"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 22"></div>
+            <div class="photo-item"><img src="img/placeholder.jpg" alt="校园风景 23"></div>
+        </div>
+    </main>
+
+    <!-- 全屏大图预览 (Lightbox) -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close"><i class="fas fa-times"></i></span>
+        <div class="lightbox-wrapper">
+            <img id="lightbox-img" src="" alt="">
+        </div>
+    </div>
+
+    <!-- 引入分离的 JS 文件 -->
+    <script src="gallery.js"></script>
+</body>
+</html>
