@@ -15,40 +15,40 @@ document.addEventListener("DOMContentLoaded", () => {
     reveals.forEach(reveal => revealOnScroll.observe(reveal));
 
     // --- 2. 相册大图预览逻辑 (Lightbox) ---
+    // --- 2. 相册大图预览逻辑 (Lightbox) ---
     const galleryItems = document.querySelectorAll('.gallery-item img');
     const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxCaption = document.getElementById('lightbox-caption');
-    const closeBtn = document.querySelector('.lightbox-close');
-
-    galleryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const src = item.getAttribute('src');
-            const alt = item.getAttribute('alt');
-            
-            lightboxImg.src = src;
-            lightboxCaption.textContent = alt;
-            lightbox.style.display = 'flex';
-            
-            // 禁止背景滚动
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    // 关闭逻辑
-    const closeLightbox = () => {
-        lightbox.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    };
-
-    closeBtn.addEventListener('click', closeLightbox);
     
-    // 点击遮罩背景也可以关闭
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
-        }
-    });
+    // 【修改点：加入 if 判断。如果页面没有 lightbox 元素，就不执行内部逻辑，防止报错崩溃】
+    if (lightbox) {
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const src = item.getAttribute('src');
+                const alt = item.getAttribute('alt');
+                lightboxImg.src = src;
+                lightboxCaption.textContent = alt;
+                lightbox.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        const closeLightbox = () => {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    }
     // --- 3. 拖动相册到底部时的“拉拽跳转”逻辑 ---
     const sceneryGallery = document.querySelector('.scenery-gallery');
     const dragIndicator = document.getElementById('drag-indicator');
@@ -64,7 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
         startX = e.touches[0].clientX;
         // 计算公式：滚动总宽度 - 已经滚动的距离 <= 容器可视宽度 + 5px(容错值)
         // 这意味着用户已经滑到了最后一张图片
-        if (sceneryGallery.scrollWidth - sceneryGallery.scrollLeft <= sceneryGallery.clientWidth + 5) {
+        // 【核心修改：加入 Math.ceil 取整，并将容错像素加宽到 10，确保绝大多数手机都能准确触发】
+        if (Math.ceil(sceneryGallery.scrollLeft) >= sceneryGallery.scrollWidth - sceneryGallery.clientWidth - 10) {
             isDraggingAtEnd = true;
             // 移除可能残余的动画过渡，确保手指拖拽时没有延迟跟手感
             dragIndicator.style.transition = 'color 0.3s, background 0.3s';
@@ -109,9 +110,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const deltaX = startX - currentX;
         const moveX = deltaX * 0.5;
 
-        if (moveX >= triggerDistance) {
-            // 距离达标：直接跳转到你的完整相册页面
-            window.location.href = "gallery.html";
+       if (moveX >= triggerDistance) {
+            // 【修改：华丽的退场效果】
+            // 1. 将箭头变成旋转的加载图标
+            dragIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span class="drag-text">开启相册...</span>';
+            
+            // 2. 让整个主页平滑缩小并变暗
+            document.body.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            document.body.style.opacity = '0';
+            document.body.style.transform = 'scale(0.95)';
+            document.body.style.backgroundColor = '#000'; // 兜底黑色
+            
+            // 3. 延迟 500 毫秒（等待退场动画播完）后再执行页面跳转
+            setTimeout(() => {
+                window.location.href = "gallery.html";
+            }, 500);
         } else {
             // 距离未达标：指示器弹回原位隐藏
             dragIndicator.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s';

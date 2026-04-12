@@ -79,22 +79,43 @@ body {
 
 .photo-item {
     width: 100%;
-    aspect-ratio: 4 / 3; /* 统一裁剪为正方形，看起来最整齐 */
+    aspect-ratio: 4 / 3; /* 之前修改的4:3比例 */
     border-radius: 6px;
     overflow: hidden;
     background-color: #eaeaea;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    
+    /* 【新增】：让图片初始状态隐藏、稍微缩小且偏下 */
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    /* 加入平滑过渡属性 */
+    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 【新增】：当 JavaScript 侦测到图片进入屏幕时，加上这个类让图片浮现 */
+.photo-item.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.photo-item:active {
+    opacity: 0.8; /* 点击反馈 */
 }
 
 .photo-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 保证图片铺满正方形且不变形 */
+    /* 【核心修复】将原来的 cover 改为 contain。
+       contain 会保证无论原图是横屏还是竖屏，都能按原比例 100% 完整显示在框内，绝不放大裁剪 */
+    object-fit: contain; 
+    
+    /* 【视觉优化】因为图片完整显示后，上下或左右必定会留出空白。
+       这里加一个深色底色，让它看起来像一个高级的暗色相框。
+       (如果你喜欢浅色边框，可以把 #1a1a1a 改成 #f4f4f4 或 #ffffff) */
+    background-color: #1a1a1a; 
+    
     display: block;
-}
-
-.photo-item:active {
-    opacity: 0.8; /* 点击反馈 */
 }
 
 /* --- 大图预览层 (Lightbox) --- */
@@ -136,4 +157,64 @@ body {
     z-index: 2001;
     cursor: pointer;
     padding: 10px;
+}
+/* =========================================
+   相册华丽入场动画特效 (Curtain Reveal)
+   ========================================= */
+
+/* 1. 深蓝色拉幕遮罩层 */
+.page-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #002b52 100%);
+    z-index: 9999; /* 确保层级最高，遮住一切 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: var(--gold-color);
+    /* 遮罩停留 0.6 秒后，开始向上滑动隐藏 */
+    animation: slideUpCurtain 0.8s cubic-bezier(0.77, 0, 0.175, 1) 0.6s forwards;
+}
+
+/* 2. 中间跳动的相机 Logo */
+.transition-logo {
+    text-align: center;
+    /* Logo 弹出的动画 */
+    animation: pulseLogo 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.transition-logo i {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+}
+
+.transition-logo p {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: var(--white);
+}
+
+/* 3. 配合幕布拉开，整个相册网页有一个“从下往上浮现”的视差跟进效果 */
+body {
+    animation: contentParallaxFade 1s cubic-bezier(0.77, 0, 0.175, 1) 0.4s both;
+}
+
+/* --- 动画关键帧定义 --- */
+@keyframes slideUpCurtain {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); visibility: hidden; }
+}
+
+@keyframes pulseLogo {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes contentParallaxFade {
+    0% { transform: translateY(60px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
 }
