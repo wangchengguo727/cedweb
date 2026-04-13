@@ -271,10 +271,10 @@ body {
 .scenery-gallery {
     display: flex;
     overflow-x: auto;
-    scroll-snap-type: x mandatory; 
-    -webkit-overflow-scrolling: touch; 
-    scrollbar-width: none; 
-    padding: 20px 20px 40px; 
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 20px 20px 40px; /* 确保左右都有 20px 的内边距 */
     gap: 15px;
 }
 
@@ -462,4 +462,69 @@ body {
 .drag-to-gallery-indicator.ready {
     background: var(--primary-color);
     color: var(--gold-color);
+}
+/* --- 静态：左右滑动提示 (Swipe Hint) --- */
+.swipe-hint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* 图标和文字的间距 */
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 15px; /* 距离上方照片的距离 */
+    opacity: 0.8;
+}
+
+.swipe-hint i {
+    color: var(--primary-color);
+    font-size: 1rem;
+    /* 给双向箭头加一个微弱的左右浮动动画，引导用户滑动 */
+    animation: swipeHintAnim 2s ease-in-out infinite;
+}
+
+@keyframes swipeHintAnim {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-5px); }
+}
+/* --- 相册末端标识样式 --- */
+/* --- 相册末端标识样式 (已修复尺寸) --- */
+.gallery-end-hint {
+    flex: 0 0 80px; /* 【修改】将宽度稍微调大到 80px，看起来更像一个面板 */
+    align-self: stretch;
+    scroll-snap-align: end; /* 【核心修复】告诉浏览器，滚动可以一直进行到这个元素的末尾 */
+    background: linear-gradient(to right, rgba(0,86,163,0.1), rgba(0,86,163,0.3));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    margin-left: 10px;
+    margin-right: 20px; /* 【新增】右边距确保卡片不紧贴屏幕边缘 */
+}
+
+.end-hint-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--primary-color);
+    opacity: 0.6;
+}
+
+.end-hint-content i {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    /* 循环左右指引的动画 */
+    animation: pointLeft 1.5s infinite;
+}
+
+.end-hint-content p {
+    writing-mode: vertical-rl; /* 文字竖向排列 */
+    letter-spacing: 4px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+@keyframes pointLeft {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-8px); }
 }

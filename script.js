@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 计算公式：滚动总宽度 - 已经滚动的距离 <= 容器可视宽度 + 5px(容错值)
         // 这意味着用户已经滑到了最后一张图片
         // 【核心修改：加入 Math.ceil 取整，并将容错像素加宽到 10，确保绝大多数手机都能准确触发】
-        if (Math.ceil(sceneryGallery.scrollLeft) >= sceneryGallery.scrollWidth - sceneryGallery.clientWidth - 10) {
+        if (Math.ceil(sceneryGallery.scrollLeft) >= sceneryGallery.scrollWidth - sceneryGallery.clientWidth - 80) {
             isDraggingAtEnd = true;
             // 移除可能残余的动画过渡，确保手指拖拽时没有延迟跟手感
             dragIndicator.style.transition = 'color 0.3s, background 0.3s';
@@ -79,57 +79,60 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!isDraggingAtEnd) return;
 
         currentX = e.touches[0].clientX;
-        const deltaX = startX - currentX; // 计算手指往左滑动的距离 (大于0表示向左拽)
+        const deltaX = startX - currentX; 
 
         if (deltaX > 0) {
-            // 阻止浏览器默认的回弹效果，接管滚动
             if (e.cancelable) e.preventDefault(); 
-            
-            // 加入 0.5 的阻尼系数，让拖拽有一种拉皮筋的“沉重感”
             const moveX = deltaX * 0.5; 
             
             dragIndicator.style.opacity = '1';
-            // 实时改变指示器的位置：从右侧外部(100%)往屏幕中间拉入(-moveX)
             dragIndicator.style.transform = `translate(calc(100% - ${moveX}px), -50%)`;
 
-            // 判断拖动距离是否达到跳转阈值
+            // 获取末端卡片的文字元素
+            const endHintText = document.querySelector('.end-hint-content p');
+
             if (moveX >= triggerDistance) {
-                dragIndicator.classList.add('ready'); // 变色
+                dragIndicator.classList.add('ready'); 
                 dragText.textContent = "松开进入相册";
+                if(endHintText) endHintText.textContent = "松开开启"; // 拖动达标时，卡片文字变化
             } else {
-                dragIndicator.classList.remove('ready'); // 恢复原色
+                dragIndicator.classList.remove('ready'); 
                 dragText.textContent = "继续拖动查看全部";
+                if(endHintText) endHintText.textContent = "左滑进入相册"; // 拖动不到位时，恢复原状
             }
         }
-    }, { passive: false }); // 必须设置为 false 才能调用 preventDefault
+    }, { passive: false }); 
 
-    // 监听手指离开屏幕
+    // 2. 监听手指离开屏幕 (更新 touchend：这里才是真正执行退场动画和跳转的地方)
     sceneryGallery.addEventListener('touchend', () => {
         if (!isDraggingAtEnd) return;
         
         const deltaX = startX - currentX;
         const moveX = deltaX * 0.5;
 
-       if (moveX >= triggerDistance) {
-            // 【修改：华丽的退场效果】
-            // 1. 将箭头变成旋转的加载图标
+        if (moveX >= triggerDistance) {
+            // 【核心修复：恢复华丽退场与真正的跳转逻辑】
             dragIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span class="drag-text">开启相册...</span>';
             
-            // 2. 让整个主页平滑缩小并变暗
             document.body.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             document.body.style.opacity = '0';
             document.body.style.transform = 'scale(0.95)';
-            document.body.style.backgroundColor = '#000'; // 兜底黑色
+            document.body.style.backgroundColor = '#000'; 
             
-            // 3. 延迟 500 毫秒（等待退场动画播完）后再执行页面跳转
+            // 延迟 500 毫秒后真正执行跳转
             setTimeout(() => {
                 window.location.href = "gallery.html";
             }, 500);
+            
         } else {
-            // 距离未达标：指示器弹回原位隐藏
+            // 距离未达标：气泡弹回原位隐藏
             dragIndicator.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s';
             dragIndicator.style.transform = 'translate(100%, -50%)';
             dragIndicator.style.opacity = '0';
+            
+            // 恢复末端卡片的文字
+            const endHintText = document.querySelector('.end-hint-content p');
+            if(endHintText) endHintText.textContent = "左滑进入相册";
         }
         
         isDraggingAtEnd = false; // 重置状态
