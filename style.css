@@ -592,6 +592,11 @@ body {
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s ease;
+    
+    /* 【新增以下三行】：消除 a 标签的默认超链接样式 */
+    display: block; 
+    text-decoration: none; 
+    color: inherit; 
 }
 
 .activity-card:active {
@@ -645,4 +650,97 @@ body {
     .activity-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+/* --- 新增：查看更多活动按钮样式 --- */
+.activity-more-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px; /* 与上方卡片拉开距离 */
+}
+
+.view-more-activities-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 28px;
+    border: 1.5px solid var(--primary-color); /* 采用线框风格，显得更清爽 */
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+/* 手机端点击反馈：点击时填充底色 */
+.view-more-activities-btn:active {
+    background-color: var(--primary-color);
+    color: var(--white);
+    transform: scale(0.95);
+}
+/* --- 荣誉墙 (Honor Wall) --- */
+.honors-section {
+    padding: 50px 0;
+    background-color: var(--bg-light); /* 使用浅灰底色，与上下白底板块区分层次 */
+    overflow: hidden;
+}
+
+.honors-gallery {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 20px 20px 30px;
+    gap: 15px;
+}
+
+.honors-gallery::-webkit-scrollbar {
+    display: none;
+}
+
+.honor-card {
+    flex: 0 0 65%; /* 占据屏幕宽度的65%，这样能露出下一张卡片的一半，引导用户滑动 */
+    scroll-snap-align: center;
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    text-decoration: none; /* 去除超链接下划线 */
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+}
+
+.honor-card:active {
+    transform: scale(0.96); /* 手机端点击时的按压回弹效果 */
+}
+
+.honor-img-box {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* 图片固定为 4:3 比例，确保证书或合影排列整齐 */
+    background-color: #eaeaea;
+    border-bottom: 3px solid var(--gold-color); /* 金色分割线，提升荣誉感 */
+}
+
+.honor-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.honor-title {
+    padding: 15px 12px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; /* 无论比赛名称是长是短，都能自动填充高度保持对齐 */
 }
