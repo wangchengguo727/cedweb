@@ -1,270 +1,364 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026届毕业纪念 - 计算机工程系</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- 引入 Favicon -->
-    <link rel="icon" href="path/to/your/favicon.png" type="image/png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2563eb" />
+  <title>中国近现代史刷题网站</title>
+  <style>
+    :root {
+      --bg:#f5f7fb; --card:#ffffff; --text:#162033; --muted:#657186;
+      --primary:#2563eb; --primary-dark:#1d4ed8; --green:#16a34a; --red:#dc2626;
+      --amber:#f59e0b; --line:#e5e9f2; --soft:#eef4ff;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif; background:linear-gradient(180deg,#eef4ff 0%,var(--bg) 160px); color:var(--text); }
+    .app { width:min(760px,100%); margin:0 auto; padding:16px 14px 96px; }
+    .hero { padding:20px 4px 12px; }
+    .title { margin:0; font-size:26px; font-weight:850; letter-spacing:-0.5px; }
+    .sub { margin:8px 0 0; color:var(--muted); font-size:14px; line-height:1.6; }
+    .card { background:rgba(255,255,255,.96); border:1px solid rgba(229,233,242,.9); border-radius:22px; box-shadow:0 14px 34px rgba(22,32,51,.08); padding:16px; margin:12px 0; }
+    .grid { display:grid; gap:12px; }
+    label.field { display:block; }
+    .field span { display:block; font-size:13px; color:var(--muted); margin:0 0 6px; }
+    select, input[type="number"] { width:100%; border:1px solid var(--line); border-radius:14px; padding:12px 12px; font-size:16px; color:var(--text); background:white; outline:none; }
+    .seg { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .seg label { display:flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:16px; padding:12px; background:#fff; font-size:14px; line-height:1.35; }
+    .seg input { width:18px; height:18px; accent-color:var(--primary); }
+    .switch { display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid var(--line); border-radius:16px; padding:12px; background:#fff; }
+    .switch b { font-size:15px; }
+    .switch small { display:block; color:var(--muted); line-height:1.45; margin-top:3px; }
+    .switch input { width:22px; height:22px; accent-color:var(--primary); }
+    .btn { border:0; border-radius:16px; padding:13px 16px; font-size:16px; font-weight:800; background:var(--primary); color:white; width:100%; cursor:pointer; box-shadow:0 10px 20px rgba(37,99,235,.22); }
+    .btn:active { transform:translateY(1px); }
+    .btn.secondary { background:#fff; color:var(--primary); border:1px solid #bfdbfe; box-shadow:none; }
+    .btn.ghost { background:transparent; color:var(--muted); border:1px solid var(--line); box-shadow:none; }
+    .btn.danger { background:var(--red); }
+    .btn.ok { background:var(--green); }
+    .btn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:14px; }
+    .stat { background:#fff; border:1px solid var(--line); border-radius:16px; padding:10px; }
+    .stat b { display:block; font-size:20px; }
+    .stat span { font-size:12px; color:var(--muted); }
+    .topbar { position:sticky; top:0; z-index:10; margin:-16px -14px 12px; padding:10px 14px; backdrop-filter:blur(14px); background:rgba(245,247,251,.82); border-bottom:1px solid rgba(229,233,242,.7); }
+    .barline { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .pill { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:7px 10px; background:#fff; border:1px solid var(--line); font-size:13px; color:var(--muted); }
+    .progress { height:8px; background:#e6edfb; border-radius:99px; overflow:hidden; margin-top:10px; }
+    .progress > div { height:100%; width:0%; background:linear-gradient(90deg,var(--primary),#60a5fa); transition:.25s; }
+    .qmeta { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:12px; }
+    .tag { font-size:12px; color:#1e40af; background:#dbeafe; border-radius:999px; padding:5px 9px; font-weight:700; }
+    .tag.multi { color:#92400e; background:#fef3c7; }
+    .qtitle { font-size:20px; line-height:1.55; margin:8px 0 14px; font-weight:800; }
+    .source { color:var(--muted); font-size:12px; line-height:1.45; }
+    .options { display:grid; gap:10px; }
+    .option { display:grid; grid-template-columns:30px 1fr; align-items:start; gap:10px; border:1px solid var(--line); border-radius:17px; padding:13px; background:#fff; line-height:1.55; cursor:pointer; user-select:none; }
+    .option .letter { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#f1f5f9; font-weight:900; color:#475569; }
+    .option input { display:none; }
+    .option.selected { border-color:#93c5fd; background:#eff6ff; }
+    .option.selected .letter { background:var(--primary); color:#fff; }
+    .option.correct { border-color:#86efac; background:#f0fdf4; }
+    .option.correct .letter { background:var(--green); color:white; }
+    .option.wrong { border-color:#fecaca; background:#fef2f2; }
+    .option.wrong .letter { background:var(--red); color:white; }
+    .explain { display:none; margin-top:14px; padding:13px; border-radius:16px; background:#f8fafc; border:1px dashed #cbd5e1; line-height:1.65; }
+    .explain.show { display:block; }
+    .explain b.ok { color:var(--green); }
+    .explain b.bad { color:var(--red); }
+    .bottom { position:fixed; left:0; right:0; bottom:0; z-index:20; padding:10px 14px calc(10px + env(safe-area-inset-bottom)); background:rgba(255,255,255,.92); backdrop-filter:blur(16px); border-top:1px solid var(--line); }
+    .bottom-inner { width:min(760px,100%); margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .bottom-inner.three { grid-template-columns:1fr 1fr 1.2fr; }
+    .review-item { border:1px solid var(--line); border-radius:18px; background:#fff; padding:13px; margin:10px 0; }
+    .review-head { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px; }
+    .review-q { font-weight:750; line-height:1.55; }
+    .answer-line { font-size:14px; line-height:1.6; color:#334155; margin-top:8px; }
+    .right { color:var(--green); font-weight:900; }
+    .wrongTxt { color:var(--red); font-weight:900; }
+    .hide { display:none !important; }
+    .empty { text-align:center; color:var(--muted); padding:22px 8px; }
+    .smallnote { font-size:12px; color:var(--muted); line-height:1.6; margin-top:10px; }
+    @media (min-width:640px) {
+      .grid.two { grid-template-columns:1fr 1fr; }
+      .title { font-size:32px; }
+      .qtitle { font-size:22px; }
+    }
+  </style>
 </head>
 <body>
-
-    <!-- 顶部固定导航条 -->
-    <header class="mobile-header">
-        <div class="header-logo">
-            <img src="img/logo/计算机工程系LOGO.jpg" alt="系徽" class="logo-img">
-            <span class="logo-text">计算机工程系</span>
+  <main class="app">
+    <section id="home">
+      <div class="hero">
+        <h1 class="title">中国近现代史刷题</h1>
+        <p class="sub">共 <b id="totalCount"></b> 道题。手机端单文件网页，刷新或重新开始都会重新打乱题目。</p>
+      </div>
+      <div class="card grid">
+        <label class="field"><span>题库范围</span><select id="sourceSelect"></select></label>
+        <div class="grid two">
+          <label class="field"><span>题型</span><select id="typeSelect"><option value="all">全部题型</option><option value="单选题">只刷单选</option><option value="多选题">只刷多选</option></select></label>
+          <label class="field"><span>本次题数</span><select id="countSelect"><option value="all">全部</option><option value="10">10 题</option><option value="20">20 题</option><option value="30">30 题</option><option value="50">50 题</option><option value="100">100 题</option></select></label>
         </div>
-        <div class="header-tag">2026毕业留念</div>
-    </header>
-
-    <!-- 1. 主视觉区 (Hero Section) -->
-    <section class="hero" style="background-image: url('path/to/your/campus-hero-bg.jpg');">
-        <div class="hero-overlay"></div>
-        
-        <!-- 文字内容区 -->
-        <div class="hero-content reveal">
-            <!-- 【核心修改】带有动画效果的校徽和系徽双圆标展示区 -->
-            <div class="hero-logos">
-                <!-- 左侧：校徽向左滑出 -->
-                <div class="logo-slide left-slide">
-                    <img src="img/logo/校徽.jpg" alt="天津理工大学中环信息学院校徽" class="hero-logo-img">
-                </div>
-                
-                <!-- 中间：斜杠分隔符 -->
-                <div class="logo-separator">/</div>
-                
-                <!-- 右侧：系徽向右滑出 -->
-                <div class="logo-slide right-slide">
-                    <img src="img/logo/计算机工程系LOGO.jpg" alt="计算机工程系系徽" class="hero-logo-img">
-                </div>
-            </div>
-
-            <h1 class="hero-title">青春不散场<br>梦想正启航</h1>
-            <p class="hero-subtitle">天津理工大学中环信息学院<br>计算机工程系</p>
+        <div>
+          <div class="field"><span>出答案方式</span></div>
+          <div class="seg">
+            <label><input type="radio" name="mode" value="instant" checked><span>做一题<br>出一题答案</span></label>
+            <label><input type="radio" name="mode" value="final"><span>全部做完<br>再出答案</span></label>
+          </div>
         </div>
-
-        <!-- 滑动指示器 -->
-        <div class="scroll-indicator">
-            <span>向下滑动开启回忆</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
+        <label class="switch">
+          <span><b>每次随机打乱</b><small>默认开启，适合反复刷题。</small></span>
+          <input type="checkbox" id="shuffleToggle" checked>
+        </label>
+        <button class="btn" id="startBtn">开始刷题</button>
+        <div class="stats" id="homeStats"></div>
+      </div>
     </section>
 
-    <!-- 2. 毕业寄语 (Message Section) -->
-    <section class="blessing-section">
-        <div class="container reveal">
-            <i class="fas fa-quote-left quote-icon"></i>
-            <p class="blessing-text">
-                四年的代码与星光，汇聚成你们此刻的锋芒。从第一行 "Hello World" 到如今的独当一面，中环的校园见证了你们的蜕变。愿你们带着计算机工程系的严谨与创新，在未来的代码世界里，编译出属于自己的辉煌人生！
-            </p>
-            <p class="blessing-author">—— 致 2026 届全体毕业生</p>
+    <section id="quiz" class="hide">
+      <div class="topbar">
+        <div class="barline">
+          <span class="pill" id="progressText">第 1 / 1 题</span>
+          <span class="pill" id="scoreText">已答 0｜正确 0</span>
         </div>
+        <div class="progress"><div id="progressFill"></div></div>
+      </div>
+      <div class="card">
+        <div class="qmeta">
+          <span id="typeTag" class="tag">单选题</span>
+          <span class="tag" id="sourceTag">题库</span>
+        </div>
+        <div class="source" id="qSource"></div>
+        <h2 class="qtitle" id="qTitle"></h2>
+        <div class="options" id="options"></div>
+        <div class="explain" id="explain"></div>
+      </div>
     </section>
 
-    <!-- 3. 校园风光 (Campus Scenery) -->
-    <section class="scenery-section">
-        <div class="container reveal">
-            <div class="section-header-flex">
-                <h2 class="section-title">校园风光 <span class="title-en">CAMPUS MEMORIES</span></h2>
-                
-                <a href="gallery.html" class="static-gallery-btn">
-                    <i class="fas fa-th"></i> 全部相册
-                </a>
-            </div>
-        </div>
-        
-        <div class="scenery-gallery reveal">
-            <div class="scenery-card">
-                <img src="img/校园风景/教学楼和宿舍1外部/春天的一教加牌子（）有代表性.jpg" alt="">
-                <div class="scenery-info">png1</div>
-            </div>
-            <div class="scenery-card">
-                <img src="img/校园风景/海棠花/校园的海棠花.jpg" alt="">
-                <div class="scenery-info">png2</div>
-            </div>
-            <div class="scenery-card">
-                <img src="img/校园风景/下雪天的校园全景.jpg" alt="">
-                <div class="scenery-info">png3</div>
-            </div>
-            <div class="scenery-card">
-                <img src="img/校园风景/天空很好看的图+石头.jpg" alt="">
-                <div class="scenery-info">png4</div>
-            </div>
-
-            <div class="gallery-end-hint">
-                <div class="end-hint-content">
-                    <i class="fas fa-chevron-left"></i>
-                    <p>左滑进入相册</p>
-                </div>
-            </div>
-        </div> 
-
-        <div class="swipe-hint reveal">
-            <i class="fas fa-arrows-alt-h"></i>
-            <span>左右滑动查看更多</span>
-        </div>
-
-        <div class="drag-to-gallery-indicator" id="drag-indicator">
-            <i class="fas fa-arrow-left"></i>
-            <span class="drag-text">继续拖动查看全部</span>
-        </div>
+    <section id="result" class="hide">
+      <div class="hero">
+        <h1 class="title">本次结果</h1>
+        <p class="sub" id="resultSummary"></p>
+      </div>
+      <div class="card grid">
+        <div class="stats" id="resultStats"></div>
+        <button class="btn" id="retryWrongBtn">只刷本次错题</button>
+        <button class="btn secondary" id="restartBtn">重新随机开始</button>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 10px;font-size:18px;">答案回顾</h3>
+        <div id="reviewList"></div>
+      </div>
     </section>
-   <section class="activities-section">
-        <div class="container reveal">
-            <h2 class="section-title">活动风采 <span class="title-en">CAMPUS ACTIVITIES</span></h2>
-            <p class="section-desc">代码之外，我们的校园生活同样热辣滚烫</p>
-            
-            <div class="activity-grid">
-                <a href="https://mp.weixin.qq.com/s/PmrzT2SGcmOMaeND26dNsg" class="activity-card">
-                    <div class="activity-img-box">
-                        <img src="img/元旦晚会.jpg" alt="活动1">
-                    </div>
-                    <div class="activity-info">
-                        <h3>计算机工程系元旦晚会</h3>
-                        <p>文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字</p>
-                    </div>
-                </a>
+  </main>
 
-                <a href="https://mp.weixin.qq.com/s/ye4kVNXkfqjPJBwpBiWtQQ" class="activity-card">
-                    <div class="activity-img-box">
-                        <img src="img/中青聚力杯.jpg" alt="活动2">
-                    </div>
-                    <div class="activity-info">
-                        <h3>中青聚力杯</h3>
-                        <p>描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字</p>
-                    </div>
-                </a>
+  <div class="bottom hide" id="bottomBar"><div class="bottom-inner" id="bottomInner"></div></div>
 
-                <a href="https://mp.weixin.qq.com/s/LpI05qltKm9oyYodi1BbXw" class="activity-card">
-                    <div class="activity-img-box">
-                        <img src="img/志愿服务.jpg" alt="活动3">
-                    </div>
-                    <div class="activity-info">
-                        <h3>【在此输入活动主标题】</h3>
-                        <p>描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字</p>
-                    </div>
-                </a>
+<script>
+const QUESTION_BANK = [{"id": "S1-Q1", "source": "练习题（二）｜社会主义建设与改革开放", "number": 1, "type": "单选题", "question": "1956年毛泽东作的《论十大关系》的报告，是探索中国社会主义建设道路的重要理论成果。《论十大关系》围绕的基本方针是()。", "options": {"A": "中国共产党同民主党派长期共存、互相监督", "B": "坚持百花齐放、百家争鸣", "C": "调动一切积极因素，把我国建设成为一个强大的社会主义国家", "D": "调整、巩固、充实、提 高"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q2", "source": "练习题（二）｜社会主义建设与改革开放", "number": 2, "type": "单选题", "question": "1956年9月，党的八大提出的我国国内的主要矛盾是()。", "options": {"A": "无产阶级同资产阶级的矛盾", "B": "人民大众同反革命残余势力的矛盾", "C": "开展社会主义道路与资本主义道路的决战", "D": "人民对于经济文化迅速发展的需要同当前经济文化不能满足人民需要的状况之间的矛盾"}, "answer": "D", "sourceId": "S1"}, {"id": "S1-Q3", "source": "练习题（二）｜社会主义建设与改革开放", "number": 3, "type": "单选题", "question": "生产资料的社会主义改造完成以后，国家政治生活的主题是()。", "options": {"A": "进行政治体制和经济体制改革", "B": "坚持四项基本原则", "C": "正确处理人民内部矛盾", "D": "开展阶级斗争"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q4", "source": "练习题（二）｜社会主义建设与改革开放", "number": 4, "type": "单选题", "question": "毛泽东在《关于正确处理人民内部矛盾的问题》中提出，解决社会主义社会基本矛盾的途径是()。", "options": {"A": "进行新民主主义革命", "B": "进行社会主义改造", "C": "依靠社会主义制度本身的自我调整和自我完善", "D": "进行无产阶级专政下的继续革命"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q5", "source": "练习题（二）｜社会主义建设与改革开放", "number": 5, "type": "单选题", "question": "1958年 9月，全国范围内掀起了人民公社化运动，人民公社的基本特点是()。", "options": {"A": "政社合一", "B": "一大二公", "C": "一平二调", "D": "平均分配"}, "answer": "B", "sourceId": "S1"}, {"id": "S1-Q6", "source": "练习题（二）｜社会主义建设与改革开放", "number": 6, "type": "单选题", "question": "苏联开始暴露他们在社会主义建设中的一些缺点和错误是在()。", "options": {"A": "1953年斯大林逝世后", "B": "赫鲁晓夫上台后", "C": "苏共 20大", "D": "我国社会主义改在完成之时"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q7", "source": "练习题（二）｜社会主义建设与改革开放", "number": 7, "type": "单选题", "question": "社会主义社会基本矛盾的性质是()。", "options": {"A": "对抗性质的", "B": "阶级之间的矛盾", "C": "必须用暴力加以解决", "D": "是非对抗性的"}, "answer": "D", "sourceId": "S1"}, {"id": "S1-Q8", "source": "练习题（二）｜社会主义建设与改革开放", "number": 8, "type": "单选题", "question": "“文化大革命”的导火线是()。", "options": {"A": "《评新编历史剧 》", "B": "五·一六通知", "C": "《炮打司令部——我的第一张大字报》", "D": "《关于无产阶级文化大革命的决定》"}, "answer": "A", "sourceId": "S1"}, {"id": "S1-Q9", "source": "练习题（二）｜社会主义建设与改革开放", "number": 9, "type": "单选题", "question": "以毛泽东为代表的中国共产党人开始探索中国自己的社会主义建设道路的标志是()。", "options": {"A": "1956年1月召开的最高国务会议", "B": "《论十大关系》的发表", "C": "中共八大的召开", "D": "《关于正确处理人民内部矛盾的问题》的发表"}, "answer": "B", "sourceId": "S1"}, {"id": "S1-Q10", "source": "练习题（二）｜社会主义建设与改革开放", "number": 10, "type": "单选题", "question": "在 1956年 1月召开的知识分子问题会议上，周恩来对知识分子阶级属性的表述是()。", "options": {"A": "民族资产阶级", "B": "小资产阶级", "C": "知识分子的绝大部分已经是工人阶级的一部分", "D": "社会中间派"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q11", "source": "练习题（二）｜社会主义建设与改革开放", "number": 11, "type": "单选题", "question": "“鼓足干劲,力争上游,多快好省建设社会主义”的总路线是在()会议上通过的。", "options": {"A": "中共七届二中全会", "B": "中共七届三中全会", "C": "中共八大", "D": "中共八大二次会议"}, "answer": "D", "sourceId": "S1"}, {"id": "S1-Q12", "source": "练习题（二）｜社会主义建设与改革开放", "number": 12, "type": "单选题", "question": "1976年“文化大革命”结束后,造成党和国家的工作在徘徊中前进局面的根源在于()。", "options": {"A": "“阶级斗争为纲”的错误方针", "B": "“批林批孔”的错误方针", "C": "“反击右倾翻案风”的错误方针", "D": "“两个凡是”的错误方针"}, "answer": "D", "sourceId": "S1"}, {"id": "S1-Q13", "source": "练习题（二）｜社会主义建设与改革开放", "number": 13, "type": "单选题", "question": "揭开中国社会主义改革开放和现代化建设新时期序幕的是()。", "options": {"A": "中共十一大", "B": "中共十一届三中全会", "C": "中共十二大", "D": "中共十二届三中全会"}, "answer": "B", "sourceId": "S1"}, {"id": "S1-Q14", "source": "练习题（二）｜社会主义建设与改革开放", "number": 14, "type": "单选题", "question": "以()和中共十四大为标志,改革开放和现代化建设事业进入从计划经济体制向社会主义市场经济体制转变的新阶段。", "options": {"A": "十三大", "B": "十一届三中全会", "C": "邓小平南方谈话", "D": "十四届三中全会"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q15", "source": "练习题（二）｜社会主义建设与改革开放", "number": 15, "type": "单选题", "question": "邓小平在中共十二大上首次明确提出了()。", "options": {"A": "建设有中国特色的社会主义", "B": "建设富强民主文明的社会主义现代化国家", "C": "党在社会主义初级阶段的基本路线", "D": "党在社会主义初级阶段的主要矛盾"}, "answer": "A", "sourceId": "S1"}, {"id": "S1-Q16", "source": "练习题（二）｜社会主义建设与改革开放", "number": 16, "type": "单选题", "question": "中共十四大明确指出我国经济体制改革的目标是建立()。", "options": {"A": "社会主义商品经济体制", "B": "计划经济为主市场经济为辅的体制", "C": "社会主义市场经济体制", "D": "市场经济为主计划经济为辅的体制"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q17", "source": "练习题（二）｜社会主义建设与改革开放", "number": 17, "type": "单选题", "question": "标志着祖国统一大业向前迈出重要一步的香港回归是在()。", "options": {"A": "1997年7月1日", "B": "1999年7月1日", "C": "1997年12月20日", "D": "1999年12月20日"}, "answer": "A", "sourceId": "S1"}, {"id": "S1-Q18", "source": "练习题（二）｜社会主义建设与改革开放", "number": 18, "type": "单选题", "question": "1979年3月,邓小平明确提出坚持“四项基本原则”是在()。", "options": {"A": "中央工作会议", "B": "中共十一届三中全会", "C": "中央理论工作务虚会", "D": "中共十二届六中全会"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q19", "source": "练习题（二）｜社会主义建设与改革开放", "number": 19, "type": "单选题", "question": "1978年12月召开的中共十一届三中全会作出了把工作重点转移到()上来和实行改革开放的战略决策。", "options": {"A": "社会主义现代化建设", "B": "阶级斗争", "C": "民族复兴", "D": "文化建设"}, "answer": "A", "sourceId": "S1"}, {"id": "S1-Q20", "source": "练习题（二）｜社会主义建设与改革开放", "number": 20, "type": "单选题", "question": "中国特色社会主义的总依据是()。", "options": {"A": "中国共产党的领导", "B": "社会主义初级阶段", "C": "中国特色社会主义基本制度", "D": "社会主义公有制"}, "answer": "B", "sourceId": "S1"}, {"id": "S1-Q21", "source": "练习题（二）｜社会主义建设与改革开放", "number": 21, "type": "单选题", "question": "中国率先签署全球合作应对气候变化的(),倡议二十国集团发表首份气候变化问题主席声明。", "options": {"A": "《巴黎协定》", "B": "《北京宣言》", "C": "《杭州倡议》", "D": "《厦门协定》"}, "answer": "A", "sourceId": "S1"}, {"id": "S1-Q22", "source": "练习题（二）｜社会主义建设与改革开放", "number": 22, "type": "单选题", "question": "坚持一个中国原则和( ),推动两岸关系和平发展,加强两岸经济文化交流合作,实现两岸领导人历史性会晤。", "options": {"A": "“两岸共识”", "B": "“汪辜共识”", "C": "“九二共识”", "D": "“台海共识”"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q23", "source": "练习题（二）｜社会主义建设与改革开放", "number": 23, "type": "单选题", "question": "中国的全球治理观反映了人类共同价值追求和当代国际关系现实,为全球治理体系改革和建设贡献了中国智慧、提供了( )。", "options": {"A": "中国道路", "B": "中国模式", "C": "中国样本", "D": "中国方案"}, "answer": "D", "sourceId": "S1"}, {"id": "S1-Q24", "source": "练习题（二）｜社会主义建设与改革开放", "number": 24, "type": "单选题", "question": "中国特色社会主义进入新时代,中国共产党一定要有()。", "options": {"A": "新气象新作为", "B": "新梦想新使命", "C": "新目标新斗争", "D": "新使命新担当"}, "answer": "A", "sourceId": "S1"}, {"id": "S1-Q25", "source": "练习题（二）｜社会主义建设与改革开放", "number": 25, "type": "单选题", "question": "党的十八大提出，中国特色社会主义的总布局是()", "options": {"A": "四位一体", "B": "五位一体", "C": "三位一体", "D": "两手抓两手都要硬"}, "answer": "B", "sourceId": "S1"}, {"id": "S1-Q26", "source": "练习题（二）｜社会主义建设与改革开放", "number": 26, "type": "单选题", "question": "党的十八大提出，确保到2020年实现()的目标。", "options": {"A": "总体建成小康社会", "B": "全面建成小康社会", "C": "基本建成小康社会", "D": "社会主义现代化"}, "answer": "B", "sourceId": "S1"}, {"id": "S1-Q27", "source": "练习题（二）｜社会主义建设与改革开放", "number": 27, "type": "单选题", "question": "党的十九大确立了()的历史地位。", "options": {"A": "邓小平理论", "B": "“三个代表”重要思想", "C": "科学发展观", "D": "习近平新时代中国特色社会主义思想"}, "answer": "D", "sourceId": "S1"}, {"id": "S1-Q28", "source": "练习题（二）｜社会主义建设与改革开放", "number": 28, "type": "单选题", "question": "中国经济发展的一个重大变化是进入新常态，即：从高速增长转为中高速增长；经济结构不断优化升级；从要素驱动、投资驱动转向( )。", "options": {"A": "战略驱动", "B": "科技驱动", "C": "创新驱动", "D": "制度驱动"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q29", "source": "练习题（二）｜社会主义建设与改革开放", "number": 29, "type": "单选题", "question": "2012年11月8日至14日,中国共产党( )全国代表大会在北京举行。", "options": {"A": "第十六次", "B": "第十七次", "C": "第十八次", "D": "第十九次"}, "answer": "C", "sourceId": "S1"}, {"id": "S1-Q30", "source": "练习题（二）｜社会主义建设与改革开放", "number": 30, "type": "单选题", "question": "2014年11月,十二届全国人大常委会第十一次会议通过《全国人民代表大会常务委员会关于设立国家宪法日的决定》,将( )设立为国家宪法日。", "options": {"A": "12月4日", "B": "12月5日", "C": "12月3日", "D": "12月6日"}, "answer": "A", "sourceId": "S1"}, {"id": "S1-Q31", "source": "练习题（二）｜社会主义建设与改革开放", "number": 31, "type": "多选题", "question": "“大跃进”和人民公社化运动期间,在经济建设上犯“左”倾错误的特征是( )", "options": {"A": "高指标", "B": "“共产风”", "C": "瞎指挥", "D": "浮夸风"}, "answer": "ABCD", "sourceId": "S1"}, {"id": "S1-Q32", "source": "练习题（二）｜社会主义建设与改革开放", "number": 32, "type": "多选题", "question": "以下内容与“文化大革命”相关的有( )", "options": {"A": "《评新编历史剧 》", "B": "《炮打司令部——我的一张大字报》", "C": "《论十大关系》", "D": "《关于无产阶级文化大革命的决定》"}, "answer": "ABD", "sourceId": "S1"}, {"id": "S1-Q33", "source": "练习题（二）｜社会主义建设与改革开放", "number": 33, "type": "多选题", "question": "1959年,毛泽东主持召开第二次郑州会议,确定的分配原则是( )", "options": {"A": "队为基础,分级管理", "B": "三级核算,各计盈亏", "C": "按劳分配,承认差别", "D": "按需分配,共同富裕"}, "answer": "ABC", "sourceId": "S1"}, {"id": "S1-Q34", "source": "练习题（二）｜社会主义建设与改革开放", "number": 34, "type": "多选题", "question": "1979年3月,邓小平在中央理论工作务虚会上首次提出必须坚持()。", "options": {"A": "社会主义道路", "B": "人民民主专政", "C": "共产党的领导", "D": "马克思列宁主义、毛泽东思想"}, "answer": "ABCD", "sourceId": "S1"}, {"id": "S1-Q35", "source": "练习题（二）｜社会主义建设与改革开放", "number": 35, "type": "多选题", "question": "邓小平在南方谈话中指出,判断改革开放得失成败的标准应该主要看()。", "options": {"A": "是否有利于提高人民的生活水平", "B": "是否有利于发展社会主义社会的生产力", "C": "是否有利于增强社会主义国家的综合国力", "D": "是否有利于发展社会主义社会的先进文化"}, "answer": "ABC", "sourceId": "S1"}, {"id": "S1-Q36", "source": "练习题（二）｜社会主义建设与改革开放", "number": 36, "type": "多选题", "question": "科学发展观的基本要求是()。", "options": {"A": "全面", "B": "协调", "C": "发展", "D": "可持续"}, "answer": "ABD", "sourceId": "S1"}, {"id": "S1-Q37", "source": "练习题（二）｜社会主义建设与改革开放", "number": 37, "type": "多选题", "question": "实现中华民族伟大复兴的中国梦,就是要实现()。", "options": {"A": "国家富强", "B": "民族振兴", "C": "社会繁荣", "D": "人民幸福"}, "answer": "ABD", "sourceId": "S1"}, {"id": "S1-Q38", "source": "练习题（二）｜社会主义建设与改革开放", "number": 38, "type": "多选题", "question": "强调实现“十三五”时期发展目标,破解发展难题,厚植发展优势,必须牢固树立并切实贯彻创新、协调、()的发展理念。", "options": {"A": "绿色", "B": "开放", "C": "和平", "D": "共享"}, "answer": "ABD", "sourceId": "S1"}, {"id": "S1-Q39", "source": "练习题（二）｜社会主义建设与改革开放", "number": 39, "type": "多选题", "question": "大力加强理想信念教育,弘扬()。", "options": {"A": "中华优秀传统文化", "B": "革命文化", "C": "社会主义先进文化", "D": "红色文化"}, "answer": "ABC", "sourceId": "S1"}, {"id": "S1-Q40", "source": "练习题（二）｜社会主义建设与改革开放", "number": 40, "type": "多选题", "question": "( )伟大梦想,紧密联系、相互贯通、相互作用,其中起决定性作用的是党的建设新的伟大工程。", "options": {"A": "伟大斗争", "B": "伟大工程", "C": "伟大事业", "D": "伟大目标"}, "answer": "ABC", "sourceId": "S1"}, {"id": "S2-Q1", "source": "练习题｜新文化运动至社会主义改造", "number": 1, "type": "单选题", "question": "五四前新文化运动的性质是()", "options": {"A": "小资产阶级无政府主义的文化运动", "B": "无产阶级社会主义的文化运动", "C": "资产阶级民主主义的文化运动", "D": "农民阶级民粹主义的文化运动"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q2", "source": "练习题｜新文化运动至社会主义改造", "number": 2, "type": "单选题", "question": "1919年五四运动的直接导火线是()", "options": {"A": "华盛会议上中国外交的失败", "B": "巴黎和会上中国外交的失败", "C": "俄国十月革命对中国的影响", "D": "新文化运动掀起的解放潮流的推动"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q3", "source": "练习题｜新文化运动至社会主义改造", "number": 3, "type": "单选题", "question": "标志着中国工人阶级以独立的姿态登上政治舞台的事件是()", "options": {"A": "国民革命运动", "B": "北伐战争", "C": "五四运动", "D": "五卅运动"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q4", "source": "练习题｜新文化运动至社会主义改造", "number": 4, "type": "单选题", "question": "中国共产党第一次明确提出反帝反封建民主革命纲领的会议是()", "options": {"A": "中共一大", "B": "中共二大", "C": "中共三大", "D": "中共四大"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q5", "source": "练习题｜新文化运动至社会主义改造", "number": 5, "type": "单选题", "question": "第一次国共合作正式形成的标志是()", "options": {"A": "中国共产党三大的召开", "B": "中国共产党二大的召开", "C": "中国国民党一大的召开", "D": "中国国民党二大的召开"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q6", "source": "练习题｜新文化运动至社会主义改造", "number": 6, "type": "单选题", "question": "1920年8月出版的《共产党宣言》中译本,是由谁翻译的()", "options": {"A": "李达", "B": "陈独秀", "C": "陈望道", "D": "梁启超"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q7", "source": "练习题｜新文化运动至社会主义改造", "number": 7, "type": "单选题", "question": "符合1931年毛泽东制定的土地革命路线的土地政策是()。", "options": {"A": "“一切私有土地完全归组织或苏维埃国家的劳动人民所公有”", "B": "“没收公共土地及地主阶级土地,分配给农民所有”", "C": "“没收富农土地,归苏维埃国家所有”", "D": "“农民分得的土地不得转让买卖”"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q8", "source": "练习题｜新文化运动至社会主义改造", "number": 8, "type": "单选题", "question": "中国工农红军长征的直接原因是()。", "options": {"A": "中共失去了广大人民的支持", "B": "中共认识到北上抗日的重要性", "C": "第五次反“围剿”的失利", "D": "中共仍未找到夺取革命胜利的道路"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q9", "source": "练习题｜新文化运动至社会主义改造", "number": 9, "type": "单选题", "question": "土地革命战争时期中国共产党最伟大的历史贡献是()。", "options": {"A": "发动、领导了著名的秋收起义", "B": "开辟了农村包围城市、武装夺取政权的道路", "C": "领导中国人民推翻了三座大山", "D": "推动了抗日民族统一战线的建立"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q10", "source": "练习题｜新文化运动至社会主义改造", "number": 10, "type": "单选题", "question": "1927年9月9日毛泽东等领导的湘赣边界秋收起义公开打出了()的旗帜。", "options": {"A": "工农革命军", "B": "工农红军", "C": "人民解放军", "D": "国民革命军"}, "answer": "A", "sourceId": "S2"}, {"id": "S2-Q11", "source": "练习题｜新文化运动至社会主义改造", "number": 11, "type": "单选题", "question": "红军胜利结束长征实现了战略大转移的标志是()。", "options": {"A": "同红四方面军会师于懋功", "B": "同红十五军团会师于吴起镇", "C": "红二、六军团合编为红二方面军", "D": "红军三大主力会合"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q12", "source": "练习题｜新文化运动至社会主义改造", "number": 12, "type": "单选题", "question": "日本帝国主义发动的变中国为其独占殖民地的侵华战争开始于()。", "options": {"A": "九一八事变", "B": "一·二八事变", "C": "华北事变", "D": "卢沟桥事变"}, "answer": "A", "sourceId": "S2"}, {"id": "S2-Q13", "source": "练习题｜新文化运动至社会主义改造", "number": 13, "type": "单选题", "question": "1932年,在日本侵略者阴谋策划下建立的傀儡政权是()。", "options": {"A": "伪“满洲国”", "B": "伪“华北自治政府”", "C": "伪“中华民国维新政府”", "D": "伪“中华民国国民政府”"}, "answer": "A", "sourceId": "S2"}, {"id": "S2-Q14", "source": "练习题｜新文化运动至社会主义改造", "number": 14, "type": "单选题", "question": "1935年,北平学生在中共号召和领导下举行的抗日救亡运动是()。", "options": {"A": "五四运动", "B": "一二·九运动", "C": "一二·一运动", "D": "一二三〇运动"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q15", "source": "练习题｜新文化运动至社会主义改造", "number": 15, "type": "单选题", "question": "1936年9月,中共中央为促进抗战在党内指示中提出的总方针是()。", "options": {"A": "“反蒋抗日”", "B": "“逼蒋抗日”", "C": "“促蒋抗日”", "D": "“联蒋抗日”"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q16", "source": "练习题｜新文化运动至社会主义改造", "number": 16, "type": "单选题", "question": "同意国共两党进行谈判,并在会议文件中第一次写上“抗日”字样的会议是()。", "options": {"A": "国民党五全大会", "B": "国民党五届三中全会", "C": "国民党九届三中全会", "D": "国民党六全大会"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q17", "source": "练习题｜新文化运动至社会主义改造", "number": 17, "type": "单选题", "question": "1937年8月,中国共产党在洛川会议上制定了()。", "options": {"A": "抗日救国十大纲领", "B": "抗日民族统一战线的策略总方针", "C": "中国人民对日作战的基本纲领", "D": "持久抗战的总方针"}, "answer": "A", "sourceId": "S2"}, {"id": "S2-Q18", "source": "练习题｜新文化运动至社会主义改造", "number": 18, "type": "单选题", "question": "抗日战争全面爆发后,中国军队取得第一次重大胜利的战役是()。", "options": {"A": "平型关战役", "B": "雁门关战役", "C": "阳明堡战役", "D": "台儿庄战役"}, "answer": "A", "sourceId": "S2"}, {"id": "S2-Q19", "source": "练习题｜新文化运动至社会主义改造", "number": 19, "type": "单选题", "question": "中国共产党领导的抗日根据地建立的政权是()。", "options": {"A": "苏维埃政权", "B": "无产阶级政权", "C": "人民民主政权", "D": "三三制的民主政权"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q20", "source": "练习题｜新文化运动至社会主义改造", "number": 20, "type": "单选题", "question": "抗日战争进入相持阶段后,日本帝国主义对国民政府的策略是()。", "options": {"A": "以军事打击为主,政治诱降为辅", "B": "以政治诱降为主,军事打击为辅", "C": "军事打击和政治诱降并重", "D": "只实行政治诱降,不实行军事打击"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q21", "source": "练习题｜新文化运动至社会主义改造", "number": 21, "type": "单选题", "question": "1940年5月,在枣宜会战的激战中殉国的国民党将军是()。", "options": {"A": "谢晋元", "B": "戴安澜", "C": "佟麟阁", "D": "张自忠"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q22", "source": "练习题｜新文化运动至社会主义改造", "number": 22, "type": "单选题", "question": "1941年3月,在大后方抗日民主运动中诞生的民主党派是()。", "options": {"A": "中华民族解放行动委员会", "B": "中国民主建国会", "C": "中国民主促进会", "D": "中国民主政团同盟"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q23", "source": "练习题｜新文化运动至社会主义改造", "number": 23, "type": "单选题", "question": "抗战胜利后,美国政府支持国民党的反共方针,美国在中国追求的长期的基本目标是()", "options": {"A": "避免共产党完全控制中国", "B": "使中国走上资本主义发展道路,遏制苏联", "C": "推动建立一个统一的亲美政府", "D": "帮助中国发展强大"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q24", "source": "练习题｜新文化运动至社会主义改造", "number": 24, "type": "单选题", "question": "1947年10月10日,中国人民解放军总部发表宣言,提出“()”的口号。", "options": {"A": "宜将剩勇追穷寇", "B": "一切反动派都是纸老虎", "C": "打倒蒋介石,解放全中国", "D": "将革命进行到底"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q25", "source": "练习题｜新文化运动至社会主义改造", "number": 25, "type": "单选题", "question": "1946年5月4日,中共中央发出《五四指示》,决定将党在抗日战争时期实行的()政策改变为实现“耕者有其田”的政策。", "options": {"A": "打土豪,分田地", "B": "地主不分田,富农分坏田", "C": "减租减息", "D": "没收一切公共土地及地主阶级的土地"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q26", "source": "练习题｜新文化运动至社会主义改造", "number": 26, "type": "单选题", "question": "经过(),到1948年秋,1亿人口的解放区消灭了封建生产关系,人民解放战争获得了源源不断的人力、物力的支援。", "options": {"A": "根据地土地革命", "B": "土地改革运动", "C": "保田参军", "D": "解放战争"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q27", "source": "练习题｜新文化运动至社会主义改造", "number": 27, "type": "单选题", "question": "在国民党统治区,以学生运动为先导的人民民主运动迅速发展成为配合人民解放战争的()。", "options": {"A": "第三条道路", "B": "第五纵队", "C": "一二·一运动", "D": "第二条战线"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q28", "source": "练习题｜新文化运动至社会主义改造", "number": 28, "type": "单选题", "question": "1945年底,昆明学生发动了以“反对内战,争取自由”为主要口号的()。", "options": {"A": "抗暴运动", "B": "一二三〇运动", "C": "反饥饿、反内战运动", "D": "一二·一运动"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q29", "source": "练习题｜新文化运动至社会主义改造", "number": 29, "type": "单选题", "question": "1947年11月,中国国民党民主派和其他爱国民主人士第一次联合会议在香港召开。1948年1月1日,会议宣布()正式成立。", "options": {"A": "中国民主同盟", "B": "中国民主建国会", "C": "中国民主促进会", "D": "中国国民党革命委员会"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q30", "source": "练习题｜新文化运动至社会主义改造", "number": 30, "type": "单选题", "question": "1949年4月21日,毛泽东、朱德发布()。人民解放军从东起江阴,西至湖口,长达1000多里的战线上强渡长江天险,一举摧毁国民党苦心经营了3个半月的长江防线。4月23日,人民解放军占领南京,宣告延续了22年之久的国民党反动统治的覆灭。", "options": {"A": "《国内和平协定》", "B": "《目前形势和我们的任务》", "C": "《将革命进行到底》", "D": "《向全国进军的命令》"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q31", "source": "练习题｜新文化运动至社会主义改造", "number": 31, "type": "单选题", "question": "1949年4月23日,人民解放军占领南京,宣告延续了()之久的国民党反动统治的覆灭。", "options": {"A": "21年", "B": "22年", "C": "37年", "D": "38年"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q32", "source": "练习题｜新文化运动至社会主义改造", "number": 32, "type": "单选题", "question": "没收官僚资本归人民的国家所有,是哪个文件规定的一项历史任务。()", "options": {"A": "《中国土地法大纲》", "B": "《中国共产党党章》", "C": "《共同纲领》", "D": "《中华人民共和国宪法》"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q33", "source": "练习题｜新文化运动至社会主义改造", "number": 33, "type": "单选题", "question": "“一五”计划是在哪个会议上正式通过的。()", "options": {"A": "中共七届二中全会", "B": "一届人大二次会议", "C": "中共八大", "D": "中共七届三中全会"}, "answer": "B", "sourceId": "S2"}, {"id": "S2-Q34", "source": "练习题｜新文化运动至社会主义改造", "number": 34, "type": "单选题", "question": "以下哪项不属于“五反”运动的()", "options": {"A": "反对行贿", "B": "反对偷税漏税", "C": "反对盗窃国家财产", "D": "反贪污"}, "answer": "D", "sourceId": "S2"}, {"id": "S2-Q35", "source": "练习题｜新文化运动至社会主义改造", "number": 35, "type": "单选题", "question": "我国社会主义制度全面确立的标志是()", "options": {"A": "新中国的建立", "B": "“一五”计划的完成", "C": "三大改造的完成", "D": "抗美援朝的胜利"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q36", "source": "练习题｜新文化运动至社会主义改造", "number": 36, "type": "单选题", "question": "中共中央正式提出党在过渡时期的总路线是在()", "options": {"A": "1949年", "B": "1952年", "C": "1953年", "D": "1956年"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q37", "source": "练习题｜新文化运动至社会主义改造", "number": 37, "type": "单选题", "question": "我国对个体手工业社会主义改造由低级向高级的过渡性经济组织形式是()", "options": {"A": "生产合作小组、供销合作社、生产合作社", "B": "供销合作社、生产合作小组、生产合作社", "C": "生产合作小组、生产合作社、供销合作社", "D": "生产合作社、生产合作小组、供销合作社"}, "answer": "A", "sourceId": "S2"}, {"id": "S2-Q38", "source": "练习题｜新文化运动至社会主义改造", "number": 38, "type": "单选题", "question": "我国对个体农业进行社会主义改造的过渡性经济组织形式中,具有完全社会主义性质的是()", "options": {"A": "互助组", "B": "初级农业生产合作社", "C": "高级农业生产合作社", "D": "人民公社"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q39", "source": "练习题｜新文化运动至社会主义改造", "number": 39, "type": "单选题", "question": "最早完成全行业公私合营的城市是()", "options": {"A": "北京市", "B": "南京市", "C": "海市", "D": "天津市"}, "answer": "A", "sourceId": "S2"}, {"id": "S2-Q40", "source": "练习题｜新文化运动至社会主义改造", "number": 40, "type": "单选题", "question": "1950-1952年的土地改革,其实质是()", "options": {"A": "彻底摧毁土地私有制", "B": "建立社会主义经济基础", "C": "彻底完成民主革命任务", "D": "完成社会主义革命任务"}, "answer": "C", "sourceId": "S2"}, {"id": "S2-Q41", "source": "练习题｜新文化运动至社会主义改造", "number": 41, "type": "多选题", "question": "新文化运动的基本口号是()", "options": {"A": "自由", "B": "民主", "C": "平等", "D": "科学"}, "answer": "BD", "sourceId": "S2"}, {"id": "S2-Q42", "source": "练习题｜新文化运动至社会主义改造", "number": 42, "type": "多选题", "question": "1922年中国共产党在上海举行第二次全国代表大会,制定了明确的革命纲领,包括()", "options": {"A": "实现社会主义、共产主义", "B": "打倒军阀", "C": "推翻国际帝国主义的压迫", "D": "统一中国为真正的民主共和国"}, "answer": "ABCD", "sourceId": "S2"}, {"id": "S2-Q43", "source": "练习题｜新文化运动至社会主义改造", "number": 43, "type": "多选题", "question": "五四前新文化运动的主要阵地是()", "options": {"A": "《新青年》杂志", "B": "《湘江评论》报纸", "C": "清华大学", "D": "北京大学"}, "answer": "AD", "sourceId": "S2"}, {"id": "S2-Q44", "source": "练习题｜新文化运动至社会主义改造", "number": 44, "type": "多选题", "question": "五四运动的历史特点和意义主要是()", "options": {"A": "是一次彻底反帝反封建的运动", "B": "是一次真正的群众性运动", "C": "促进了马克思主义在中国的广泛传播及其与中国工人运动的结合", "D": "是中国新民主主义革命的开端"}, "answer": "ABCD", "sourceId": "S2"}, {"id": "S2-Q45", "source": "练习题｜新文化运动至社会主义改造", "number": 45, "type": "多选题", "question": "下列说法与五四运动有关的是()", "options": {"A": "旧民主主义革命的开端", "B": "是一次彻底的反帝反封建的爱国运动", "C": "“誓死力争,还我青岛”", "D": "导火线是巴黎和会上中国外交的失败"}, "answer": "BCD", "sourceId": "S2"}, {"id": "S2-Q46", "source": "练习题｜新文化运动至社会主义改造", "number": 46, "type": "多选题", "question": "八七会议是中国革命史上一个历史的转折点,这次会议()。", "options": {"A": "决定举行秋收起义", "B": "总结了大革命失败的经验教训", "C": "确定了土地革命和武装反抗国民党反动派的总方针", "D": "批判和纠正了陈独秀右倾机会主义错误"}, "answer": "ABCD", "sourceId": "S2"}, {"id": "S2-Q47", "source": "练习题｜新文化运动至社会主义改造", "number": 47, "type": "多选题", "question": "在1927年8月7日召开的八七会议上,确定的革命的总方针是()。", "options": {"A": "建立革命根据地", "B": "武装反抗国民党反动统治", "C": "走农村包围城市的道路", "D": "开展土地革命"}, "answer": "BD", "sourceId": "S2"}, {"id": "S2-Q48", "source": "练习题｜新文化运动至社会主义改造", "number": 48, "type": "多选题", "question": "南昌起义的历史意义是()。", "options": {"A": "打响了武装反抗国民党反动统治的第一枪", "B": "成为中国共产党独立领导革命战争、创建人民军队和武装夺取政权的伟大开端", "C": "揭开了土地革命的序幕", "D": "开辟了“以农村包围城市”的道路"}, "answer": "ABC", "sourceId": "S2"}, {"id": "S2-Q49", "source": "练习题｜新文化运动至社会主义改造", "number": 49, "type": "多选题", "question": "中国共产党在1935年瓦窑堡会议上严厉批评的党内错误倾向是()。", "options": {"A": "“左”倾冒险主义", "B": "“左”倾关门主义", "C": "右倾机会主义", "D": "右倾投降主义"}, "answer": "AB", "sourceId": "S2"}, {"id": "S2-Q50", "source": "练习题｜新文化运动至社会主义改造", "number": 50, "type": "多选题", "question": "日本发动侵华战争给中华民族造成的深重灾难集中表现在()。", "options": {"A": "制造了惨绝人寰的大屠杀", "B": "疯狂掠夺中国的资源与财富", "C": "强制推行奴化教育", "D": "加强了国际交流与合作"}, "answer": "ABC", "sourceId": "S2"}, {"id": "S2-Q51", "source": "练习题｜新文化运动至社会主义改造", "number": 51, "type": "多选题", "question": "在1936年12月12日毅然发动西安事变的国民党爱国将领是", "options": {"A": "蔡廷锴", "B": "蒋光鼐", "C": "张学良", "D": "杨虎城"}, "answer": "CD", "sourceId": "S2"}, {"id": "S2-Q52", "source": "练习题｜新文化运动至社会主义改造", "number": 52, "type": "多选题", "question": "抗日战争胜利后,蒋介石在积极准备内战的同时,又表示愿意与中共进行和平谈判,其目的有()", "options": {"A": "敷衍国内外舆论", "B": "诱使中共交出人民军队和解放区政权", "C": "掩盖其正在进行的内战准备", "D": "把战争责任转嫁给中共"}, "answer": "ABCD", "sourceId": "S2"}, {"id": "S2-Q53", "source": "练习题｜新文化运动至社会主义改造", "number": 53, "type": "多选题", "question": "解放战争时期,在国民党统治区,以学生运动为先导的人民民主运动迅速发展成为配合人民解放战争的第二条战线,其中,著名的学生运动有()。", "options": {"A": "抗暴运动", "B": "一二三〇运动", "C": "反饥饿、反内战运动", "D": "一二·一运动"}, "answer": "ABCD", "sourceId": "S2"}, {"id": "S2-Q54", "source": "练习题｜新文化运动至社会主义改造", "number": 54, "type": "多选题", "question": "抗日战争胜利后,某些民主党派的领导人物企图在国共两党对立的纲领之外,寻找出第三条道路,他们的主张和方法有()。", "options": {"A": "实现英美式的民主政治,但不准地主官僚资本家操纵", "B": "走和平的改良的道路", "C": "建立新民主主义社会", "D": "实行改良的资本主义,但不容官僚买办资本横行"}, "answer": "ABD", "sourceId": "S2"}, {"id": "S2-Q55", "source": "练习题｜新文化运动至社会主义改造", "number": 55, "type": "多选题", "question": "在对资本主义工商业的改造过程中,对企业利润实行“四马分肥”的原则,这四马是()", "options": {"A": "国家所得税", "B": "企业公积金", "C": "工人福利费", "D": "股金红利"}, "answer": "ABCD", "sourceId": "S2"}, {"id": "S2-Q56", "source": "练习题｜新文化运动至社会主义改造", "number": 56, "type": "多选题", "question": "中国共产党在过渡时期总路线的主要内容是逐步实现()", "options": {"A": "社会主义工业化", "B": "对农业的社会主义改造", "C": "对手工业的社会主义改造", "D": "对资本主义工商业的社会主义改造"}, "answer": "ABCD", "sourceId": "S2"}, {"id": "S3-Q1", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 1, "type": "单选题", "question": "根据2018年版《中国近现代史纲要》,中国的近代史,是从1840年开始到()结束。", "options": {"A": "1919年", "B": "1937年", "C": "1949年", "D": "1954年"}, "answer": "C", "sourceId": "S3"}, {"id": "S3-Q2", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 2, "type": "单选题", "question": "1840年以来中国的历史即()", "options": {"A": "中国近代史", "B": "中国现代史", "C": "中国当代史", "D": "中国近现代史"}, "answer": "D", "sourceId": "S3"}, {"id": "S3-Q3", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 3, "type": "单选题", "question": "从1840年鸦片战争开始,到1949年中华人民共和国成立之前,中国属于()", "options": {"A": "由殖民主义宗主国直接统治的殖民地", "B": "拥有完整主权的独立国家", "C": "完全的封建社会", "D": "半殖民地半封建社会"}, "answer": "D", "sourceId": "S3"}, {"id": "S3-Q4", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 4, "type": "单选题", "question": "洋务运动是在()年清政府中的地主阶级洋务派兴起的。", "options": {"A": "19世纪50年代", "B": "19世纪60年代", "C": "19世纪70年代", "D": "19世纪90年代"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q5", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 5, "type": "单选题", "question": "19世纪70年代到90年代清朝的“四大水师”中,实力最强的是()。", "options": {"A": "南洋水师", "B": "北洋水师", "C": "福建水师", "D": "广东水师"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q6", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 6, "type": "单选题", "question": "最早揭示洋务运动指导思想“中体西用”思想核心内涵的是()。", "options": {"A": "冯桂芬", "B": "张之洞", "C": "沈寿康", "D": "严复"}, "answer": "A", "sourceId": "S3"}, {"id": "S3-Q7", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 7, "type": "单选题", "question": "1866年,()在福建创办的福州船政局是当时国内最大的造船厂。", "options": {"A": "张之洞", "B": "李鸿章", "C": "左宗棠", "D": "曾国藩"}, "answer": "C", "sourceId": "S3"}, {"id": "S3-Q8", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 8, "type": "单选题", "question": "洋务派兴办军事工业的目的中,下面()不是。", "options": {"A": "镇压太平天国起义", "B": "为了发展资本主义", "C": "为了维护清王朝的统治", "D": "加强海防、边防,抵御外国侵略"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q9", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 9, "type": "单选题", "question": "维新派代表人物中,被称为近代启蒙思想家的是()", "options": {"A": "康有为", "B": "梁启超", "C": "严复", "D": "谭嗣同"}, "answer": "C", "sourceId": "S3"}, {"id": "S3-Q10", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 10, "type": "单选题", "question": "甲午战争后,通过翻译《天演论》为戊戌维新运动提供理论依据的是()", "options": {"A": "严复", "B": "康有为", "C": "梁启超", "D": "谭嗣同"}, "answer": "A", "sourceId": "S3"}, {"id": "S3-Q11", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 11, "type": "单选题", "question": "标志着革命派举起了武装起义反抗清王朝旗帜的事件是()", "options": {"A": "兴中会的成立", "B": "华兴会的成立", "C": "同盟会的成立", "D": "光复会的成立"}, "answer": "A", "sourceId": "S3"}, {"id": "S3-Q12", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 12, "type": "单选题", "question": "同盟会留日学生中因反清革命被杀害的第一人是()", "options": {"A": "焦达峰", "B": "陈天华", "C": "邹容", "D": "刘道一"}, "answer": "D", "sourceId": "S3"}, {"id": "S3-Q13", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 13, "type": "单选题", "question": "近代中国第一个把土地问题和发展资本主义联系起来的经济纲领是()", "options": {"A": "洪仁玕的《资政新篇》", "B": "魏源的《海国图志》", "C": "孙中山的《民生主义》", "D": "郑观应的《盛世危言》"}, "answer": "C", "sourceId": "S3"}, {"id": "S3-Q14", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 14, "type": "单选题", "question": "中国历史上第一部具有资产阶级共和国宪法性质的法典是()", "options": {"A": "《中华民国约法》", "B": "《中华人民共和国宪法》", "C": "《中华民国临时约法》", "D": "《总统选举法》"}, "answer": "C", "sourceId": "S3"}, {"id": "S3-Q15", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 15, "type": "单选题", "question": "1912年8月,宋教仁以同盟会为基础联合其他几个政党,组成()", "options": {"A": "民主党", "B": "青年党", "C": "中华国民党", "D": "国民党"}, "answer": "D", "sourceId": "S3"}, {"id": "S3-Q16", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 16, "type": "单选题", "question": "为摆脱困境,1901年清政府成立(),宣布实行“新政”。", "options": {"A": "懋勤殿", "B": "军机处", "C": "政务公开处", "D": "督办政务处"}, "answer": "D", "sourceId": "S3"}, {"id": "S3-Q17", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 17, "type": "单选题", "question": "1911年5月清政府成立的责任内阁中,13名大臣中()有9人", "options": {"A": "汉族", "B": "满族", "C": "皇族", "D": "贵族"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q18", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 18, "type": "单选题", "question": "辛亥革命前十年发生的众多“民变”事件中,()是规模和影响较大的一次民变事件", "options": {"A": "宾凤阳事件", "B": "天津教案", "C": "公车上书", "D": "长沙抢米风潮"}, "answer": "D", "sourceId": "S3"}, {"id": "S3-Q19", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 19, "type": "单选题", "question": "从1793年马戛尔尼使华事件可以看出,清王朝在()皇帝在位时期已开始走向衰落。", "options": {"A": "嘉庆", "B": "乾隆", "C": "雍正", "D": "道光"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q20", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 20, "type": "单选题", "question": "1860年10月,抢劫和焚烧圆明园的列强是()", "options": {"A": "八国联军", "B": "日本侵略军", "C": "英法联军", "D": "俄国侵略军"}, "answer": "C", "sourceId": "S3"}, {"id": "S3-Q21", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 21, "type": "单选题", "question": "1861年,恭亲王奕䜣和慈禧太后为掌握政权发动的宫廷政变是()", "options": {"A": "天京事变", "B": "辛酉政变", "C": "戊戌政变", "D": "玄武门政变"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q22", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 22, "type": "单选题", "question": "中国近代史上中国人民第一次大规模的反侵略武装斗争是()", "options": {"A": "抗日战争", "B": "三元里人民的抗英斗争", "C": "太平天国运动", "D": "义和团运动"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q23", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 23, "type": "单选题", "question": "孙中山喊出“振兴中华”这个时代最强音的时间是()", "options": {"A": "1912年成立南京临时政府时", "B": "1894年创立兴中会时", "C": "1905年创立同盟会时", "D": "1914年成立中华革命党时"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q24", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 24, "type": "单选题", "question": "从1863年到1908年,在中国掌握海关大权40余年的是()", "options": {"A": "李泰国", "B": "赫德", "C": "李鸿章", "D": "金登干"}, "answer": "B", "sourceId": "S3"}, {"id": "S3-Q25", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 25, "type": "单选题", "question": "中国人普遍的民族意识的觉醒始于()", "options": {"A": "鸦片战争以后", "B": "第二次鸦片战争以后", "C": "中法战争以后", "D": "中日甲午战争以后"}, "answer": "D", "sourceId": "S3"}, {"id": "S3-Q26", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 26, "type": "多选题", "question": "下面属于中国特色社会主义的四个自信的是()。", "options": {"A": "道路自信", "B": "理论自信", "C": "制度自信", "D": "道德自信"}, "answer": "ABC", "sourceId": "S3"}, {"id": "S3-Q27", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 27, "type": "多选题", "question": "以下有关“中国近现代史纲要”课程性质表述准确的有()", "options": {"A": "它是一门具有历史性特点的思想政治理论课", "B": "设置这门课程的目的是为了提高大学生的史学素养和政治觉悟", "C": "它具有教学目的的政治性与教学内容的历史性相统一的特点", "D": "它是面向全国高等学校本科生开设的一门选修课"}, "answer": "ABC", "sourceId": "S3"}, {"id": "S3-Q28", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 28, "type": "多选题", "question": "洋务运动的主要内容包括()。", "options": {"A": "创办军事工业", "B": "创办民用工业", "C": "筹建海军", "D": "废除科举制"}, "answer": "ABC", "sourceId": "S3"}, {"id": "S3-Q29", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 29, "type": "多选题", "question": "为了挽救清政府的统治危机,封建统治阶级中的洋务派主张引进、仿造西方的武器装备和学习西方的科学技术,兴办洋务,主要代表人物有()。", "options": {"A": "曾国藩", "B": "李鸿章", "C": "左宗棠", "D": "张之洞"}, "answer": "ABCD", "sourceId": "S3"}, {"id": "S3-Q30", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 30, "type": "多选题", "question": "之所以说百日维新没有触及封建制度的根本,是因为新政内容()", "options": {"A": "政治改革没有触及封建专制统治的基础", "B": "经济改革没有触及封建土地制度的根基", "C": "文化改革没有触及封建文化教育制度的根本", "D": "没有采取发展资本主义工商业的举措"}, "answer": "ABC", "sourceId": "S3"}, {"id": "S3-Q31", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 31, "type": "多选题", "question": "以下属于南京临时政府革新社会风俗的措施有()", "options": {"A": "废除跪拜礼", "B": "男子剪辫", "C": "女子放足", "D": "设立实业部"}, "answer": "ABC", "sourceId": "S3"}, {"id": "S3-Q32", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 32, "type": "多选题", "question": "辛亥革命的伟大历史意义包括()", "options": {"A": "推翻了清朝,为中国人民斗争的发展开辟了道路", "B": "结束了君主专制制度,使民主共和观念开始深入人心", "C": "推动了中国人民的思想解放", "D": "推动了中国的社会变革"}, "answer": "ABCD", "sourceId": "S3"}, {"id": "S3-Q33", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 33, "type": "多选题", "question": "清末“新政”中,清政府预备立宪的真实目的是()", "options": {"A": "“固皇位”", "B": "“弥内乱”", "C": "“阻外患”", "D": "“推民主”"}, "answer": "ABC", "sourceId": "S3"}, {"id": "S3-Q34", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 34, "type": "多选题", "question": "近代资本-帝国主义侵略中国的表现形式有()", "options": {"A": "军事侵略", "B": "政治控制", "C": "经济掠夺", "D": "文化渗透"}, "answer": "ABCD", "sourceId": "S3"}, {"id": "S3-Q35", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 35, "type": "多选题", "question": "早期维新思想家的代表人物有()", "options": {"A": "王韬", "B": "薛福成", "C": "马建忠", "D": "郑观应"}, "answer": "ABCD", "sourceId": "S3"}, {"id": "S3-Q36", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 36, "type": "多选题", "question": "下列不平等条约中涉及香港问题的有()", "options": {"A": "《南京条约》", "B": "《北京条约》", "C": "《马关条约》", "D": "《中英展拓香港界址专条》"}, "answer": "ABD", "sourceId": "S3"}, {"id": "S3-Q37", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 37, "type": "多选题", "question": "以下属于近代民族意识觉醒的有()", "options": {"A": "“师夷长技以制夷”的主张", "B": "早期的维新思想", "C": "救亡图存", "D": "振兴中华"}, "answer": "ABCD", "sourceId": "S3"}, {"id": "S3-Q38", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 38, "type": "多选题", "question": "维新派主张的君主立宪制度在中国难以实现的主要原因有()", "options": {"A": "中国根深蒂固的专制主义政治文化土壤", "B": "维新派所依仗的光绪皇帝没有掌握实权", "C": "维新派缺乏群众基础", "D": "维新派没有武装力量的支持"}, "answer": "ABCD", "sourceId": "S3"}, {"id": "S3-Q39", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 39, "type": "多选题", "question": "从19世纪70到90年代,清政府建成()四大水师。", "options": {"A": "福建水师", "B": "广东水师", "C": "南洋水师", "D": "北洋水师"}, "answer": "ABCD", "sourceId": "S3"}, {"id": "S3-Q40", "source": "纲要练习试卷｜1840年至辛亥革命等", "number": 40, "type": "多选题", "question": "洋务派兴办了一些民用企业,多数采取官督商办的方式,其中最重要的官督商办企业有()。", "options": {"A": "轮船招商局", "B": "天津机器局", "C": "上海机器局", "D": "开平矿务局"}, "answer": "ACD", "sourceId": "S3"}];
+const SOURCES = [{"id": "S1", "title": "练习题（二）｜社会主义建设与改革开放", "count": 40}, {"id": "S2", "title": "练习题｜新文化运动至社会主义改造", "count": 56}, {"id": "S3", "title": "纲要练习试卷｜1840年至辛亥革命等", "count": 40}];
+const $ = (id) => document.getElementById(id);
+const letters = ['A','B','C','D'];
+let state = null;
 
-                <a href="https://mp.weixin.qq.com/s/li4sTLWAmseJswMbGurQmg" class="activity-card">
-                    <div class="activity-img-box">
-                        <img src="img/挑战杯.jpg" alt="活动4">
-                    </div>
-                    <div class="activity-info">
-                        <h3>“挑战杯”大学生创业计划竞赛系级决赛</h3>
-                        <p>描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字描述文字</p>
-                    </div>
-                </a>
-            </div>
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function answerText(q, ans) {
+  if (!ans || ans.length === 0) return '未作答';
+  return ans.split('').map(l => `${l}. ${q.options[l] || ''}`).join('；');
+}
+function sameAnswer(a, b) {
+  return (a || []).slice().sort().join('') === (b || '').split('').sort().join('');
+}
+function chosenString(q) { return (state.answers[q.id] || []).slice().sort().join(''); }
+function isAnswered(q) { return (state.answers[q.id] || []).length > 0; }
+function correctCount() { return state.questions.filter(q => sameAnswer(state.answers[q.id] || [], q.answer)).length; }
+function answeredCount() { return state.questions.filter(q => isAnswered(q)).length; }
+function getMode() { return document.querySelector('input[name="mode"]:checked').value; }
 
-            <div class="activity-more-btn-wrapper reveal">
-                <a href="【在此处插入全部活动页面的链接】" class="view-more-activities-btn">
-                    <span>查看更多活动</span> <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </section>
+function initHome() {
+  $('totalCount').textContent = QUESTION_BANK.length;
+  const sourceSelect = $('sourceSelect');
+  sourceSelect.innerHTML = `<option value="all">全部题库（${QUESTION_BANK.length} 题）</option>` + SOURCES.map(s => `<option value="${s.id}">${s.title}（${s.count} 题）</option>`).join('');
+  const single = QUESTION_BANK.filter(q => q.type === '单选题').length;
+  const multi = QUESTION_BANK.filter(q => q.type === '多选题').length;
+  $('homeStats').innerHTML = `
+    <div class="stat"><b>${QUESTION_BANK.length}</b><span>总题数</span></div>
+    <div class="stat"><b>${single}</b><span>单选题</span></div>
+    <div class="stat"><b>${multi}</b><span>多选题</span></div>`;
+}
 
-    <section class="honors-section">
-        <div class="container reveal">
-            <h2 class="section-title">荣誉墙 <span class="title-en">WALL OF HONOR</span></h2>
-            <p class="section-desc">那些披星戴月的日子，终会化作璀璨星光</p>
-        </div>
+function buildPool(customPool=null) {
+  let pool = customPool ? customPool.slice() : QUESTION_BANK.slice();
+  if (!customPool) {
+    const sid = $('sourceSelect').value;
+    const typ = $('typeSelect').value;
+    if (sid !== 'all') pool = pool.filter(q => q.sourceId === sid);
+    if (typ !== 'all') pool = pool.filter(q => q.type === typ);
+    if ($('shuffleToggle').checked) pool = shuffle(pool);
+    const countValue = $('countSelect').value;
+    if (countValue !== 'all') pool = pool.slice(0, Math.min(Number(countValue), pool.length));
+  } else {
+    pool = $('shuffleToggle').checked ? shuffle(pool) : pool;
+  }
+  return pool;
+}
 
-        <div class="honors-gallery reveal">
-            <a href="https://mp.weixin.qq.com/s/IrAH0aHIR703pjNvOthTsw" class="honor-card">
-                <div class="honor-img-box">
-                    <img src="img/奖项/开放原子.jpg" alt="荣誉1">
-                </div>
-                <div class="honor-title">第三届开放原子大赛全国赛</div>
-            </a>
-            
-            <a href="https://mp.weixin.qq.com/s/iR5-sFN1n9f9XBkEFulgZw" class="honor-card">
-                <div class="honor-img-box">
-                    <img src="img/奖项/数据要素.jpg" alt="荣誉2">
-                </div>
-                <div class="honor-title">第二届大学生数据要素素质大赛</div>
-            </a>
-            
-            <a href="https://mp.weixin.qq.com/s/-Icq3RrUtCmXIQl6uabHtQ" class="honor-card">
-                <div class="honor-img-box">
-                    <img src="img/奖项/先进成图.png" alt="荣誉3">
-                </div>
-                <div class="honor-title">第十八届“高教杯”全国大学生先进成图技术与产品信息建模创新大赛</div>
-            </a>
-            
-            <a href="https://mp.weixin.qq.com/s/PEtWPzlVTxf6Cq6HRL7qLw" class="honor-card">
-                <div class="honor-img-box">
-                    <img src="img/奖项/IT杯.png" alt="荣誉4">
-                </div>
-                <div class="honor-title">TI杯全国大学生电子设计竞赛</div>
-            </a>
-            
-            <a href="https://mp.weixin.qq.com/s/_xFjmp-YUspaai1zP0fMpQ" class="honor-card">
-                <div class="honor-img-box">
-                    <img src="img/奖项/CRAIC.jpg" alt="荣誉5">
-                </div>
-                <div class="honor-title">2025年CRAIC（中国机器人及人工智能大赛）</div>
-            </a>
-        </div>
-        
-        <div class="swipe-hint reveal">
-            <i class="fas fa-arrows-alt-h"></i>
-            <span>左右滑动查看更多荣誉</span>
-        </div>
-    </section>
-    <section class="majors-section">
-        <div class="container reveal">
-            <h2 class="section-title">专业印记 <span class="title-en">OUR MAJORS</span></h2>
-            <p class="section-desc">还记得你最初选择的那个方向吗？</p>
-            
-            <div class="majors-list">
-                <div class="major-item">
-                    <div class="major-icon"><i class="fas fa-desktop"></i></div>
-                    <div class="major-details">
-                        <h3>计算机科学与技术</h3>
-                        <p>探索计算之美，筑牢底层逻辑，你是构筑数字世界的基石。</p>
-                    </div>
-                </div>
-                
-                <div class="major-item">
-                    <div class="major-icon"><i class="fas fa-code"></i></div>
-                    <div class="major-details">
-                        <h3>软件工程</h3>
-                        <p>以工程化思维铸就软件之魂，你将成为系统架构的执笔人。</p>
-                    </div>
-                </div>
-                <div class="major-item">
-                    <div class="major-icon"><i class="fas fa-photo-video"></i></div>
-                    <div class="major-details">
-                        <h3>数字媒体技术</h3>
-                        <p>左手代码，右手艺术，你们在虚拟与现实的交界处创造奇迹。</p>
-                    </div>
-                </div>
-                <div class="major-item">
-                    <div class="major-icon"><i class="fas fa-database"></i></div>
-                    <div class="major-details">
-                        <h3>数据科学与大数据技术</h3>
-                        <p>在海量数据中挖掘宝藏，你们是洞悉未来的数字预言家。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+function startQuiz(customPool=null) {
+  const pool = buildPool(customPool);
+  if (!pool.length) { alert('当前筛选没有题目，请换一个范围。'); return; }
+  state = {
+    questions: pool,
+    index: 0,
+    mode: getMode(),
+    answers: Object.fromEntries(pool.map(q => [q.id, []])),
+    checked: Object.fromEntries(pool.map(q => [q.id, false])),
+    submitted: false,
+    lastWrong: []
+  };
+  $('home').classList.add('hide');
+  $('result').classList.add('hide');
+  $('quiz').classList.remove('hide');
+  $('bottomBar').classList.remove('hide');
+  renderQuestion();
+}
 
-    <!-- 5. 底部留念 (Footer) -->
-    <footer class="mobile-footer">
-        <div class="container reveal">
-            <img src="img/logo/计算机工程系LOGO.jpg" alt="系徽" class="footer-logo">
-            <h3>天津理工大学中环信息学院</h3>
-            <h4>计算机工程系</h4>
-            <div class="footer-line"></div>
-            <p class="copyright">愿此去繁花似锦，再相逢依然如故。</p>
-        </div>
-    </footer>
+function renderQuestion() {
+  const q = state.questions[state.index];
+  const idx = state.index + 1;
+  $('progressText').textContent = `第 ${idx} / ${state.questions.length} 题`;
+  $('scoreText').textContent = state.mode === 'instant'
+    ? `已答 ${answeredCount()}｜正确 ${correctCount()}`
+    : `已答 ${answeredCount()}｜未交卷`;
+  $('progressFill').style.width = `${(idx-1) / state.questions.length * 100}%`;
+  $('typeTag').textContent = q.type;
+  $('typeTag').className = q.type === '多选题' ? 'tag multi' : 'tag';
+  $('sourceTag').textContent = q.id;
+  $('qSource').textContent = `${q.source}｜原第 ${q.number} 题`;
+  $('qTitle').textContent = q.question;
+  const selected = state.answers[q.id] || [];
+  const locked = state.checked[q.id] || state.submitted;
+  $('options').innerHTML = letters.map(l => {
+    const isSel = selected.includes(l);
+    let cls = 'option' + (isSel ? ' selected' : '');
+    if (locked) {
+      if (q.answer.includes(l)) cls += ' correct';
+      else if (isSel) cls += ' wrong';
+    }
+    const inputType = q.type === '单选题' ? 'radio' : 'checkbox';
+    return `<label class="${cls}" data-letter="${l}">
+      <input type="${inputType}" name="opt" value="${l}" ${isSel ? 'checked' : ''} ${locked ? 'disabled' : ''}>
+      <span class="letter">${l}</span><span>${escapeHtml(q.options[l])}</span>
+    </label>`;
+  }).join('');
+  document.querySelectorAll('.option').forEach(label => {
+    label.addEventListener('click', (e) => {
+      if (locked) return;
+      const l = label.dataset.letter;
+      if (q.type === '单选题') state.answers[q.id] = [l];
+      else {
+        const set = new Set(state.answers[q.id] || []);
+        set.has(l) ? set.delete(l) : set.add(l);
+        state.answers[q.id] = Array.from(set).sort();
+      }
+      renderQuestion();
+    });
+  });
+  renderExplain(q, locked);
+  renderBottom();
+}
 
-    <script src="script.js"></script>
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[s]));
+}
+
+function renderExplain(q, show) {
+  const ok = sameAnswer(state.answers[q.id] || [], q.answer);
+  $('explain').className = show ? 'explain show' : 'explain';
+  $('explain').innerHTML = show ? `
+    <div>${ok ? '<b class="ok">回答正确</b>' : '<b class="bad">回答错误</b>'}</div>
+    <div>你的答案：${escapeHtml(answerText(q, chosenString(q)))}</div>
+    <div>正确答案：<b>${q.answer}</b>　${escapeHtml(answerText(q, q.answer))}</div>` : '';
+}
+
+function renderBottom() {
+  const q = state.questions[state.index];
+  const selected = isAnswered(q);
+  const checked = state.checked[q.id];
+  const last = state.index === state.questions.length - 1;
+  const bottom = $('bottomInner');
+  if (state.mode === 'instant') {
+    bottom.className = 'bottom-inner three';
+    bottom.innerHTML = `
+      <button class="btn ghost" id="prevBtn" ${state.index===0?'disabled':''}>上一题</button>
+      <button class="btn ${checked ? 'secondary' : 'ok'}" id="checkBtn" ${(!selected || checked)?'disabled':''}>提交本题</button>
+      <button class="btn" id="nextBtn">${last ? '查看结果' : '下一题'}</button>`;
+    $('prevBtn').onclick = () => { if (state.index > 0) { state.index--; renderQuestion(); } };
+    $('checkBtn').onclick = () => { state.checked[q.id] = true; renderQuestion(); };
+    $('nextBtn').onclick = () => {
+      if (!checked && selected) { state.checked[q.id] = true; renderQuestion(); return; }
+      if (last) finishQuiz(); else { state.index++; renderQuestion(); }
+    };
+  } else {
+    bottom.className = 'bottom-inner three';
+    bottom.innerHTML = `
+      <button class="btn ghost" id="prevBtn" ${state.index===0?'disabled':''}>上一题</button>
+      <button class="btn secondary" id="nextBtn">${last ? '停在本题' : '下一题'}</button>
+      <button class="btn" id="submitBtn">交卷看答案</button>`;
+    $('prevBtn').onclick = () => { if (state.index > 0) { state.index--; renderQuestion(); } };
+    $('nextBtn').onclick = () => { if (!last) { state.index++; renderQuestion(); } };
+    $('submitBtn').onclick = () => {
+      const un = state.questions.length - answeredCount();
+      if (un > 0 && !confirm(`还有 ${un} 道题未作答，确定交卷吗？`)) return;
+      finishQuiz();
+    };
+  }
+}
+
+function finishQuiz() {
+  state.submitted = true;
+  state.questions.forEach(q => state.checked[q.id] = true);
+  const total = state.questions.length;
+  const right = correctCount();
+  const wrong = total - right;
+  const percent = Math.round(right / total * 100);
+  state.lastWrong = state.questions.filter(q => !sameAnswer(state.answers[q.id] || [], q.answer));
+  $('quiz').classList.add('hide');
+  $('bottomBar').classList.add('hide');
+  $('result').classList.remove('hide');
+  $('resultSummary').textContent = `本次共 ${total} 题，答对 ${right} 题，答错/未答 ${wrong} 题，正确率 ${percent}%。`;
+  $('resultStats').innerHTML = `
+    <div class="stat"><b>${right}</b><span>答对</span></div>
+    <div class="stat"><b>${wrong}</b><span>答错/未答</span></div>
+    <div class="stat"><b>${percent}%</b><span>正确率</span></div>`;
+  $('retryWrongBtn').disabled = state.lastWrong.length === 0;
+  $('retryWrongBtn').textContent = state.lastWrong.length ? `只刷本次错题（${state.lastWrong.length}题）` : '本次没有错题';
+  renderReview();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderReview() {
+  const list = $('reviewList');
+  list.innerHTML = state.questions.map((q, i) => {
+    const chosen = chosenString(q);
+    const ok = sameAnswer(state.answers[q.id] || [], q.answer);
+    return `<div class="review-item">
+      <div class="review-head"><span class="tag ${q.type==='多选题'?'multi':''}">${q.type}</span><span class="tag">${i+1}/${state.questions.length}</span><span class="${ok?'right':'wrongTxt'}">${ok?'正确':'错误'}</span></div>
+      <div class="source">${escapeHtml(q.source)}｜原第 ${q.number} 题</div>
+      <div class="review-q">${escapeHtml(q.question)}</div>
+      <div class="answer-line">你的答案：${escapeHtml(answerText(q, chosen))}</div>
+      <div class="answer-line">正确答案：<b>${q.answer}</b>　${escapeHtml(answerText(q, q.answer))}</div>
+    </div>`;
+  }).join('') || '<div class="empty">没有回顾内容</div>';
+}
+
+$('startBtn').onclick = () => startQuiz();
+$('restartBtn').onclick = () => { $('result').classList.add('hide'); $('home').classList.remove('hide'); window.scrollTo({top:0, behavior:'smooth'}); };
+$('retryWrongBtn').onclick = () => { if (state && state.lastWrong.length) startQuiz(state.lastWrong); };
+initHome();
+</script>
 </body>
 </html>
